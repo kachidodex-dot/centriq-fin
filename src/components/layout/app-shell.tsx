@@ -57,9 +57,15 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dark min-h-screen bg-background text-foreground relative overflow-hidden">
+      {/* Ambient background */}
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-grid opacity-40" />
+        <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-primary/20 blur-[120px]" />
+        <div className="absolute top-1/3 -right-40 h-[500px] w-[500px] rounded-full bg-chart-2/20 blur-[120px]" />
+      </div>
       {/* Mobile top bar */}
-      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur px-4 py-3">
+      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/60 backdrop-blur-xl px-4 py-3">
         <Link to="/" className="flex items-center gap-2"><div className="grid h-7 w-7 place-items-center rounded-md gradient-primary text-primary-foreground text-xs font-bold">Z</div><span className="font-semibold text-sm">Zentriq</span></Link>
         <Button variant="ghost" size="icon" onClick={() => setOpen(!open)}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</Button>
       </div>
@@ -70,7 +76,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       )}
 
       <div className="lg:grid lg:grid-cols-[260px_1fr]">
-        <aside className="hidden lg:flex lg:flex-col sticky top-0 h-screen border-r border-sidebar-border bg-sidebar p-6">
+        <aside className="hidden lg:flex lg:flex-col sticky top-0 h-screen border-r border-sidebar-border bg-sidebar/60 backdrop-blur-xl p-6">
           {SidebarInner}
         </aside>
         <main className="min-h-screen">
