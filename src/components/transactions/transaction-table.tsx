@@ -15,10 +15,10 @@ export function TransactionTable({ txs, currency, onEdit, onDelete }: { txs: Tra
     );
   }
   return (
-    <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-soft">
+    <div className="glow-card rounded-2xl overflow-hidden shadow-soft">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
+          <thead className="bg-muted/30 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
             <tr>
               <th className="px-4 py-3 text-left">Date</th>
               <th className="px-4 py-3 text-left">Category</th>
@@ -29,7 +29,7 @@ export function TransactionTable({ txs, currency, onEdit, onDelete }: { txs: Tra
           </thead>
           <tbody>
             {txs.map((t) => (
-              <tr key={t.id} className="border-t border-border hover:bg-muted/30">
+              <tr key={t.id} className="border-t border-border/60 transition-colors hover:bg-primary/5">
                 <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{formatDate(t.date)}</td>
                 <td className="px-4 py-3"><Badge variant="secondary" className="capitalize">{t.category}</Badge></td>
                 <td className="px-4 py-3 text-muted-foreground max-w-xs truncate">{t.note || "—"}</td>
