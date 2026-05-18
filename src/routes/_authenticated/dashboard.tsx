@@ -65,7 +65,7 @@ function Dashboard() {
 
       <div className="grid gap-6 lg:grid-cols-3 lg:items-stretch">
         <div className="lg:col-span-2"><IncomeExpensesChart txs={txs} /></div>
-        <InsightsPanel insights={insights} />
+        <InsightsPanel insights={insights} txs={txs} currency={currency} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
