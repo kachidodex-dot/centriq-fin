@@ -72,7 +72,7 @@ export function InsightsPanel({
   ];
 
   return (
-    <div className="glow-card glow-ring rounded-2xl p-5 shadow-elevated relative overflow-hidden h-full flex flex-col min-h-[460px]">
+    <div className="glow-card glow-ring rounded-2xl p-5 shadow-elevated relative overflow-hidden flex flex-col h-[560px] max-h-[calc(100vh-9rem)]">
       <div className="absolute -top-20 -right-20 h-48 w-48 rounded-full bg-primary/30 blur-3xl pointer-events-none" />
       <div className="flex items-center gap-3 relative">
         <div className="grid h-10 w-10 place-items-center rounded-xl gradient-primary text-primary-foreground shadow-glow">
@@ -90,7 +90,7 @@ export function InsightsPanel({
         </div>
       </div>
 
-      <div ref={scrollRef} className="mt-4 flex-1 space-y-2 overflow-y-auto pr-1 min-h-0">
+      <div ref={scrollRef} className="scroll-fancy mt-4 flex-1 space-y-2 overflow-y-auto overscroll-contain pr-2 min-h-0">
         {messages.length === 0 ? (
           <>
             <div className="rounded-xl border border-border/60 bg-card/40 p-3">
