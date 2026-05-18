@@ -90,7 +90,7 @@ export function InsightsPanel({
         </div>
       </div>
 
-      <div ref={scrollRef} className="mt-4 flex-1 space-y-2 overflow-y-auto pr-1 min-h-0">
+      <div ref={scrollRef} className="scroll-fancy mt-4 flex-1 space-y-2 overflow-y-auto overscroll-contain pr-2 min-h-0">
         {messages.length === 0 ? (
           <>
             <div className="rounded-xl border border-border/60 bg-card/40 p-3">
