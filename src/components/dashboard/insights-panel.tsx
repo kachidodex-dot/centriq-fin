@@ -42,7 +42,7 @@ export function InsightsPanel({
       type: t.type,
       category: t.category,
       amount: Number(t.amount),
-      description: t.description ?? null,
+      description: t.note ?? null,
     }));
     return { income, expenses, profit: income - expenses, currency, topCategories, recent };
   };
