@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useState, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/zentriq-logo.jpeg";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -22,9 +23,9 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const SidebarInner = (
     <>
-      <Link to="/" className="flex items-center gap-2 px-2 py-1">
-        <div className="grid h-8 w-8 place-items-center rounded-lg gradient-primary text-primary-foreground font-bold">Z</div>
-        <span className="font-semibold">Zentriq</span>
+      <Link to="/" className="flex items-center gap-2.5 px-2 py-1 group">
+        <img src={logo} alt="Zentriq" className="h-9 w-9 rounded-lg object-contain shadow-glow transition-transform duration-500 group-hover:rotate-[8deg] group-hover:scale-110" />
+        <span className="font-semibold text-lg tracking-tight">Zentriq</span>
       </Link>
       <nav className="mt-8 space-y-1">
         {nav.map((item) => {
@@ -66,7 +67,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </div>
       {/* Mobile top bar */}
       <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/60 backdrop-blur-xl px-4 py-3">
-        <Link to="/" className="flex items-center gap-2"><div className="grid h-7 w-7 place-items-center rounded-md gradient-primary text-primary-foreground text-xs font-bold">Z</div><span className="font-semibold text-sm">Zentriq</span></Link>
+        <Link to="/" className="flex items-center gap-2"><img src={logo} alt="Zentriq" className="h-7 w-7 rounded-md object-contain" /><span className="font-semibold text-sm">Zentriq</span></Link>
         <Button variant="ghost" size="icon" onClick={() => setOpen(!open)}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</Button>
       </div>
 
@@ -75,7 +76,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="lg:hidden fixed inset-0 z-30 bg-background/95 backdrop-blur p-6 pt-20 flex flex-col">{SidebarInner}</div>
       )}
 
-      <div className="lg:grid lg:grid-cols-[260px_1fr]">
+      <div className="lg:grid lg:grid-cols-[300px_1fr]">
         <aside className="hidden lg:flex lg:flex-col sticky top-0 h-screen border-r border-sidebar-border bg-sidebar/60 backdrop-blur-xl p-6">
           {SidebarInner}
         </aside>

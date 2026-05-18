@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, BarChart3, Brain, ShieldCheck, TrendingUp, Zap, Check, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/zentriq-logo.jpeg";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -16,16 +17,26 @@ export const Route = createFileRoute("/")({
 });
 
 function Logo({ className = "h-8 w-8" }: { className?: string }) {
-  return <img src={logo} alt="Zentriq" className={`${className} rounded-md object-contain`} />;
+  return <img src={logo} alt="Zentriq" className={`${className} rounded-lg object-contain shadow-soft`} />;
 }
 
 function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-2.5">
-          <Logo className="h-8 w-8" />
-          <span className="font-semibold tracking-tight text-lg">Zentriq</span>
+    <header className={`sticky top-0 z-50 transition-all duration-500 ${scrolled ? "border-b border-border/60 bg-background/80 backdrop-blur-xl shadow-soft" : "bg-transparent"}`}>
+      <div className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ${scrolled ? "py-3" : "py-5"}`}>
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="relative">
+            <div className={`absolute inset-0 rounded-2xl bg-primary/20 blur-xl transition-all duration-500 ${scrolled ? "opacity-0 scale-90" : "opacity-100 scale-100 animate-pulse-glow"}`} />
+            <Logo className={`relative transition-all duration-500 group-hover:rotate-[360deg] group-hover:scale-110 ${scrolled ? "h-10 w-10" : "h-14 w-14 ring-2 ring-primary/20"}`} />
+          </div>
+          <span className={`font-bold tracking-tight transition-all duration-500 ${scrolled ? "text-lg" : "text-2xl"}`}>Zentriq</span>
         </Link>
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
           <a href="#features" className="hover:text-foreground transition">Features</a>

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
+import logo from "@/assets/zentriq-logo.jpeg";
 
 export const Route = createFileRoute("/login")({
   head: () => ({ meta: [{ title: "Sign in — Zentriq" }] }),
@@ -33,15 +34,23 @@ function LoginPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       <div className="hidden lg:flex relative items-center justify-center gradient-primary p-12 overflow-hidden">
+        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-primary-foreground/10 blur-3xl animate-pulse" />
+        <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-primary-foreground/10 blur-3xl animate-pulse [animation-delay:1s]" />
         <div className="relative z-10 max-w-md text-primary-foreground">
-          <Link to="/" className="flex items-center gap-2 font-semibold"><div className="grid h-8 w-8 place-items-center rounded-lg bg-primary-foreground/15 backdrop-blur">Z</div> Zentriq</Link>
-          <h2 className="mt-12 text-4xl font-bold leading-tight">Welcome back to financial clarity.</h2>
-          <p className="mt-4 text-primary-foreground/80">Sign in to see today's numbers and what AI noticed about your business.</p>
+          <Link to="/" className="flex items-center gap-3 font-semibold group">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-2xl bg-primary-foreground/30 blur-xl animate-pulse-glow" />
+              <img src={logo} alt="Zentriq" className="relative h-14 w-14 rounded-2xl object-contain shadow-2xl ring-2 ring-primary-foreground/30 transition-transform duration-700 group-hover:rotate-[360deg] group-hover:scale-110" />
+            </div>
+            <span className="text-2xl tracking-tight">Zentriq</span>
+          </Link>
+          <h2 className="mt-12 text-4xl font-bold leading-tight animate-in fade-in slide-in-from-bottom-4 duration-700">Welcome back to financial clarity.</h2>
+          <p className="mt-4 text-primary-foreground/80 animate-in fade-in slide-in-from-bottom-6 duration-1000">Sign in to see today's numbers and what AI noticed about your business.</p>
         </div>
       </div>
       <div className="flex items-center justify-center p-6 sm:p-10">
         <div className="w-full max-w-md">
-          <Link to="/" className="lg:hidden flex items-center gap-2 font-semibold mb-8"><div className="grid h-8 w-8 place-items-center rounded-lg gradient-primary text-primary-foreground">Z</div> Zentriq</Link>
+          <Link to="/" className="lg:hidden flex items-center gap-2 font-semibold mb-8"><img src={logo} alt="Zentriq" className="h-10 w-10 rounded-lg object-contain" /> Zentriq</Link>
           <h1 className="text-2xl font-bold tracking-tight">Sign in</h1>
           <p className="mt-1 text-sm text-muted-foreground">Welcome back. Let's check the numbers.</p>
           <form onSubmit={onSubmit} className="mt-8 space-y-4">
