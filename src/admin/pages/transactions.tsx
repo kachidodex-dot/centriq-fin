@@ -82,7 +82,7 @@ export function AdminTransactionsPage() {
                   border: "1px solid #e5e7eb",
                   borderRadius: "8px",
                 }}
-                formatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+                formatter={(value: number) => `$${(value / 1000).toFixed(0)}K`}
               />
               <Line
                 type="monotone"
