@@ -3,7 +3,6 @@ import { ArrowRight, Sparkles, BarChart3, Brain, ShieldCheck, TrendingUp, Zap, C
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/zentriq-logo.jpeg";
 import { useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { Reveal, StaggerContainer, StaggerItem, FloatY } from "@/components/motion/reveal";
 
 export const Route = createFileRoute("/")({
@@ -56,21 +55,12 @@ function Nav() {
 }
 
 function Hero() {
-  const reduce = useReducedMotion();
-  const { scrollY } = useScroll();
-  const heroY = useTransform(scrollY, [0, 600], [0, reduce ? 0 : 80]);
-  const heroOpacity = useTransform(scrollY, [0, 500], [1, reduce ? 1 : 0.4]);
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 gradient-hero pointer-events-none" />
-      <motion.div
-        aria-hidden
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-primary/5 blur-3xl pointer-events-none"
-        animate={reduce ? undefined : { scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      />
+      <div aria-hidden className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-6 pt-16 pb-20 sm:pt-24 lg:pt-28">
-        <motion.div className="grid gap-12 lg:grid-cols-2 lg:items-center" style={{ y: heroY, opacity: heroOpacity }}>
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <StaggerContainer once amount={0.1} stagger={0.12}>
             <StaggerItem>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-soft">
@@ -90,8 +80,8 @@ function Hero() {
             </StaggerItem>
             <StaggerItem>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link to="/signup"><motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}><Button size="lg" className="gap-2 rounded-full px-6">Try it for free <ArrowRight className="h-4 w-4" /></Button></motion.div></Link>
-              <Link to="/login"><motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}><Button size="lg" variant="outline" className="rounded-full px-6">Learn more</Button></motion.div></Link>
+              <Link to="/signup"><Button size="lg" className="gap-2 rounded-full px-6 transition-transform hover:scale-[1.02]">Try it for free <ArrowRight className="h-4 w-4" /></Button></Link>
+              <Link to="/login"><Button size="lg" variant="outline" className="rounded-full px-6 transition-transform hover:scale-[1.02]">Learn more</Button></Link>
             </div>
             </StaggerItem>
             <StaggerItem>
@@ -107,12 +97,12 @@ function Hero() {
             </div>
             </StaggerItem>
           </StaggerContainer>
-          <Reveal direction="left" duration={1} className="relative">
-            <FloatY amplitude={10} duration={7}>
+          <Reveal direction="left" duration={0.6} className="relative">
+            <FloatY amplitude={6} duration={9}>
               <DashboardPreview />
             </FloatY>
           </Reveal>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -180,12 +170,12 @@ function Stats() {
         </Reveal>
         <StaggerContainer className="mt-14 grid gap-6 sm:grid-cols-3" stagger={0.12}>
           {items.map((s, i) => (
-            <StaggerItem key={s.label} direction={i % 2 === 0 ? "up" : "down"}>
-              <motion.div whileHover={{ y: -8 }} transition={{ type: "spring", stiffness: 200, damping: 20 }} className={`rounded-2xl border border-border bg-card p-8 shadow-soft hover:shadow-elevated ${i === 1 ? "sm:-translate-y-4" : ""}`}>
+            <StaggerItem key={s.label} direction="up">
+              <div className={`rounded-2xl border border-border bg-card p-8 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated ${i === 1 ? "sm:-translate-y-4" : ""}`}>
                 <div className="text-5xl font-bold tracking-tight">{s.value}</div>
                 <div className="mt-3 text-xs uppercase tracking-[0.12em] font-semibold text-muted-foreground">{s.label}</div>
                 <p className="mt-4 text-sm text-muted-foreground">{s.body}</p>
-              </motion.div>
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -248,13 +238,13 @@ function Features() {
       <StaggerContainer className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08}>
         {items.map((f) => (
           <StaggerItem key={f.title}>
-            <motion.div whileHover={{ y: -6, scale: 1.01 }} transition={{ type: "spring", stiffness: 220, damping: 22 }} className="group h-full rounded-2xl border border-border bg-card p-7 hover:border-primary/30 hover:shadow-elevated">
+            <div className="group h-full rounded-2xl border border-border bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-elevated">
               <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
                 <f.icon className="h-5 w-5" />
               </div>
               <h3 className="mt-5 font-semibold text-lg">{f.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{f.body}</p>
-            </motion.div>
+            </div>
           </StaggerItem>
         ))}
       </StaggerContainer>
@@ -287,12 +277,12 @@ function AiSection() {
               "Food has overtaken inventory as your top expense category.",
             ].map((t, i) => (
               <StaggerItem key={i} direction="left">
-                <motion.div whileHover={{ x: 6 }} transition={{ type: "spring", stiffness: 240, damping: 22 }} className="rounded-xl border border-border bg-card p-5 shadow-soft hover:shadow-elevated">
+                <div className="rounded-xl border border-border bg-card p-5 shadow-soft transition-all duration-300 hover:translate-x-1 hover:shadow-elevated">
                   <div className="flex items-start gap-3">
                     <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg gradient-primary text-primary-foreground"><Sparkles className="h-4 w-4" /></div>
                     <p className="text-sm leading-relaxed">{t}</p>
                   </div>
-                </motion.div>
+                </div>
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -306,16 +296,11 @@ function CTA() {
   return (
     <section id="pricing" className="mx-auto max-w-5xl px-6 py-24">
       <Reveal direction="up" className="relative rounded-3xl border border-border bg-card p-12 sm:p-16 text-center shadow-elevated overflow-hidden">
-        <motion.div
-          aria-hidden
-          className="absolute inset-0 gradient-hero opacity-60 pointer-events-none"
-          animate={{ backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        />
+        <div aria-hidden className="absolute inset-0 gradient-hero opacity-60 pointer-events-none" />
         <div className="relative">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Run your business with clarity.</h2>
           <p className="mt-4 text-muted-foreground">Start free. No credit card. Set up in under a minute.</p>
-          <Link to="/signup"><motion.div className="inline-block" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}><Button size="lg" className="mt-8 gap-2 rounded-full px-7">Get started free <ArrowRight className="h-4 w-4" /></Button></motion.div></Link>
+          <Link to="/signup"><Button size="lg" className="mt-8 gap-2 rounded-full px-7 transition-transform hover:scale-[1.02]">Get started free <ArrowRight className="h-4 w-4" /></Button></Link>
           <div className="mt-6 flex items-center justify-center gap-6 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> Free forever plan</span>
             <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> Bank-grade security</span>

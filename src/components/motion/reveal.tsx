@@ -18,12 +18,12 @@ function getOffset(direction: Direction, distance: number) {
 export function Reveal({
   children,
   direction = "up",
-  distance = 28,
+  distance = 16,
   delay = 0,
-  duration = 0.8,
+  duration = 0.5,
   className,
-  once = false,
-  amount = 0.2,
+  once = true,
+  amount = 0.15,
   as: Tag = "div",
 }: {
   children: ReactNode;
@@ -44,7 +44,7 @@ export function Reveal({
       className={className}
       initial={{ opacity: 0, ...offset }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once, amount, margin: "0px 0px -10% 0px" }}
+      viewport={{ once, amount, margin: "0px 0px -5% 0px" }}
       transition={{ duration: reduce ? 0 : duration, delay, ease: EASE }}
     >
       {children}
@@ -55,10 +55,10 @@ export function Reveal({
 export function StaggerContainer({
   children,
   className,
-  stagger = 0.09,
+  stagger = 0.06,
   delayChildren = 0,
-  once = false,
-  amount = 0.2,
+  once = true,
+  amount = 0.15,
 }: {
   children: ReactNode;
   className?: string;
@@ -77,7 +77,7 @@ export function StaggerContainer({
       variants={variants}
       initial="hidden"
       whileInView="show"
-      viewport={{ once, amount, margin: "0px 0px -10% 0px" }}
+      viewport={{ once, amount, margin: "0px 0px -5% 0px" }}
     >
       {children}
     </motion.div>
@@ -87,8 +87,8 @@ export function StaggerContainer({
 export function StaggerItem({
   children,
   direction = "up",
-  distance = 24,
-  duration = 0.7,
+  distance = 14,
+  duration = 0.5,
   className,
 }: {
   children: ReactNode;
@@ -110,7 +110,7 @@ export function StaggerItem({
   );
 }
 
-export function FloatY({ children, className, amplitude = 8, duration = 6 }: { children: ReactNode; className?: string; amplitude?: number; duration?: number }) {
+export function FloatY({ children, className, amplitude = 6, duration = 8 }: { children: ReactNode; className?: string; amplitude?: number; duration?: number }) {
   const reduce = useReducedMotion();
   if (reduce) return <div className={className}>{children}</div>;
   return (
