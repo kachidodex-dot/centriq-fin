@@ -13,7 +13,9 @@ export async function fetchRealUsers() {
       return [];
     }
 
-    return (data || []).map((user, index) => ({
+    return (data || []).map((row, index) => {
+      const user = row as any;
+      return {
       id: user.id || `user_${index}`,
       name: user.full_name || "Unknown User",
       email: user.email || `user${index}@example.com`,
@@ -22,7 +24,8 @@ export async function fetchRealUsers() {
       status: ["active", "suspended", "inactive"][index % 3] as any,
       joinDate: new Date(user.created_at || Date.now()).toISOString().split("T")[0],
       avatar: user.full_name?.substring(0, 2).toUpperCase() || "U",
-    }));
+      };
+    });
   } catch (error) {
     console.error("Failed to fetch users:", error);
     return [];
@@ -44,7 +47,9 @@ export async function fetchRealTransactions() {
       return [];
     }
 
-    return data.map((txn, index) => ({
+    return data.map((row, index) => {
+      const txn = row as any;
+      return {
       id: txn.id || `txn_${index}`,
       user: txn.user_name || "Unknown User",
       category: txn.category || "General",
@@ -52,7 +57,8 @@ export async function fetchRealTransactions() {
       type: txn.type === "debit" ? "debit" : "credit",
       date: new Date(txn.created_at).toISOString().split("T")[0],
       status: txn.status || "completed",
-    }));
+      };
+    });
   } catch (error) {
     console.error("Failed to fetch transactions:", error);
     return [];
