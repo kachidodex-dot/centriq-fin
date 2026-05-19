@@ -3,6 +3,8 @@ import { ArrowRight, Sparkles, BarChart3, Brain, ShieldCheck, TrendingUp, Zap, C
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/zentriq-logo.jpeg";
 import { useEffect, useState } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { Reveal, StaggerContainer, StaggerItem, FloatY } from "@/components/motion/reveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -54,27 +56,45 @@ function Nav() {
 }
 
 function Hero() {
+  const reduce = useReducedMotion();
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 600], [0, reduce ? 0 : 80]);
+  const heroOpacity = useTransform(scrollY, [0, 500], [1, reduce ? 1 : 0.4]);
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 gradient-hero pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+      <motion.div
+        aria-hidden
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-primary/5 blur-3xl pointer-events-none"
+        animate={reduce ? undefined : { scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
       <div className="relative mx-auto max-w-7xl px-6 pt-16 pb-20 sm:pt-24 lg:pt-28">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <motion.div className="grid gap-12 lg:grid-cols-2 lg:items-center" style={{ y: heroY, opacity: heroOpacity }}>
+          <StaggerContainer once amount={0.1} stagger={0.12}>
+            <StaggerItem>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-soft">
               <span className="flex h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
               Trusted by 1,200+ small businesses
             </div>
+            </StaggerItem>
+            <StaggerItem>
             <h1 className="mt-6 text-balance text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
               Track your revenue. <span className="text-muted-foreground">Grow your business.</span>
             </h1>
+            </StaggerItem>
+            <StaggerItem>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed">
               Easily track income, monitor cash flow, and stay on top of your revenue without the complexity of traditional accounting tools.
             </p>
+            </StaggerItem>
+            <StaggerItem>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link to="/signup"><Button size="lg" className="gap-2 rounded-full px-6">Try it for free <ArrowRight className="h-4 w-4" /></Button></Link>
-              <Link to="/login"><Button size="lg" variant="outline" className="rounded-full px-6">Learn more</Button></Link>
+              <Link to="/signup"><motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}><Button size="lg" className="gap-2 rounded-full px-6">Try it for free <ArrowRight className="h-4 w-4" /></Button></motion.div></Link>
+              <Link to="/login"><motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}><Button size="lg" variant="outline" className="rounded-full px-6">Learn more</Button></motion.div></Link>
             </div>
+            </StaggerItem>
+            <StaggerItem>
             <div className="mt-8 flex items-center gap-3">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
@@ -85,11 +105,14 @@ function Hero() {
                 <span className="font-semibold text-foreground">Trustpilot</span> · 4.9/5 from 320+ reviews
               </div>
             </div>
-          </div>
-          <div className="relative animate-in fade-in slide-in-from-bottom-6 duration-1000">
-            <DashboardPreview />
-          </div>
-        </div>
+            </StaggerItem>
+          </StaggerContainer>
+          <Reveal direction="left" duration={1} className="relative">
+            <FloatY amplitude={10} duration={7}>
+              <DashboardPreview />
+            </FloatY>
+          </Reveal>
+        </motion.div>
       </div>
     </section>
   );
@@ -151,19 +174,21 @@ function Stats() {
   return (
     <section id="stats" className="bg-secondary/40 py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal direction="up" className="mx-auto max-w-2xl text-center">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Real savings, real results</h2>
           <p className="mt-4 text-muted-foreground">From everyday expenses to growth investments — Zentriq helps you understand every move without the hassle.</p>
-        </div>
-        <div className="mt-14 grid gap-6 sm:grid-cols-3">
+        </Reveal>
+        <StaggerContainer className="mt-14 grid gap-6 sm:grid-cols-3" stagger={0.12}>
           {items.map((s, i) => (
-            <div key={s.label} className={`rounded-2xl border border-border bg-card p-8 shadow-soft transition hover:shadow-elevated hover:-translate-y-1 ${i === 1 ? "sm:-translate-y-4" : ""}`}>
-              <div className="text-5xl font-bold tracking-tight">{s.value}</div>
-              <div className="mt-3 text-xs uppercase tracking-[0.12em] font-semibold text-muted-foreground">{s.label}</div>
-              <p className="mt-4 text-sm text-muted-foreground">{s.body}</p>
-            </div>
+            <StaggerItem key={s.label} direction={i % 2 === 0 ? "up" : "down"}>
+              <motion.div whileHover={{ y: -8 }} transition={{ type: "spring", stiffness: 200, damping: 20 }} className={`rounded-2xl border border-border bg-card p-8 shadow-soft hover:shadow-elevated ${i === 1 ? "sm:-translate-y-4" : ""}`}>
+                <div className="text-5xl font-bold tracking-tight">{s.value}</div>
+                <div className="mt-3 text-xs uppercase tracking-[0.12em] font-semibold text-muted-foreground">{s.label}</div>
+                <p className="mt-4 text-sm text-muted-foreground">{s.body}</p>
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );
@@ -173,14 +198,14 @@ function Testimonial() {
   return (
     <section id="testimonial" className="mx-auto max-w-7xl px-6 py-24">
       <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-        <div className="relative aspect-[4/5] max-w-md rounded-3xl bg-gradient-to-br from-accent to-secondary overflow-hidden shadow-elevated">
+        <Reveal direction="right" className="relative aspect-[4/5] max-w-md rounded-3xl bg-gradient-to-br from-accent to-secondary overflow-hidden shadow-elevated">
           <div className="absolute inset-0 grid place-items-center">
             <div className="grid h-16 w-16 place-items-center rounded-full bg-primary text-primary-foreground shadow-glow">
               <div className="ml-1 h-0 w-0 border-y-8 border-y-transparent border-l-[12px] border-l-primary-foreground" />
             </div>
           </div>
-        </div>
-        <div>
+        </Reveal>
+        <Reveal direction="left">
           <Quote className="h-10 w-10 text-primary" />
           <blockquote className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight leading-tight">
             "I finally know where my money is going."
@@ -198,7 +223,7 @@ function Testimonial() {
               <div className="text-sm text-muted-foreground">Founder, Bloom Studio</div>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -215,22 +240,24 @@ function Features() {
   ];
   return (
     <section id="features" className="mx-auto max-w-7xl px-6 py-24">
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal direction="up" className="mx-auto max-w-2xl text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground"><Sparkles className="h-3 w-3 text-primary" /> Features</div>
         <h2 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight">Everything you need to run the numbers</h2>
         <p className="mt-4 text-muted-foreground">Modern tools without the enterprise overhead.</p>
-      </div>
-      <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      </Reveal>
+      <StaggerContainer className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08}>
         {items.map((f) => (
-          <div key={f.title} className="group rounded-2xl border border-border bg-card p-7 transition-all hover:border-primary/30 hover:shadow-elevated hover:-translate-y-1">
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
-              <f.icon className="h-5 w-5" />
-            </div>
-            <h3 className="mt-5 font-semibold text-lg">{f.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{f.body}</p>
-          </div>
+          <StaggerItem key={f.title}>
+            <motion.div whileHover={{ y: -6, scale: 1.01 }} transition={{ type: "spring", stiffness: 220, damping: 22 }} className="group h-full rounded-2xl border border-border bg-card p-7 hover:border-primary/30 hover:shadow-elevated">
+              <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
+                <f.icon className="h-5 w-5" />
+              </div>
+              <h3 className="mt-5 font-semibold text-lg">{f.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{f.body}</p>
+            </motion.div>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
     </section>
   );
 }
@@ -240,7 +267,7 @@ function AiSection() {
     <section id="ai" className="bg-secondary/40 py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div>
+          <Reveal direction="right">
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs"><Brain className="h-3.5 w-3.5 text-primary" /> AI Insights</div>
             <h2 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight">Your numbers, explained.</h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">Zentriq watches your transactions and tells you what matters — in clear, human language. No spreadsheets, no jargon.</p>
@@ -252,21 +279,23 @@ function AiSection() {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="space-y-3">
+          </Reveal>
+          <StaggerContainer className="space-y-3" stagger={0.1}>
             {[
               "Transport spending increased 22% this week.",
               "You're saving 38% of monthly income — above industry average.",
               "Food has overtaken inventory as your top expense category.",
             ].map((t, i) => (
-              <div key={i} className="rounded-xl border border-border bg-card p-5 shadow-soft hover:shadow-elevated transition">
-                <div className="flex items-start gap-3">
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg gradient-primary text-primary-foreground"><Sparkles className="h-4 w-4" /></div>
-                  <p className="text-sm leading-relaxed">{t}</p>
-                </div>
-              </div>
+              <StaggerItem key={i} direction="left">
+                <motion.div whileHover={{ x: 6 }} transition={{ type: "spring", stiffness: 240, damping: 22 }} className="rounded-xl border border-border bg-card p-5 shadow-soft hover:shadow-elevated">
+                  <div className="flex items-start gap-3">
+                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg gradient-primary text-primary-foreground"><Sparkles className="h-4 w-4" /></div>
+                    <p className="text-sm leading-relaxed">{t}</p>
+                  </div>
+                </motion.div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </div>
     </section>
@@ -276,19 +305,24 @@ function AiSection() {
 function CTA() {
   return (
     <section id="pricing" className="mx-auto max-w-5xl px-6 py-24">
-      <div className="relative rounded-3xl border border-border bg-card p-12 sm:p-16 text-center shadow-elevated overflow-hidden">
-        <div className="absolute inset-0 gradient-hero opacity-60 pointer-events-none" />
+      <Reveal direction="up" className="relative rounded-3xl border border-border bg-card p-12 sm:p-16 text-center shadow-elevated overflow-hidden">
+        <motion.div
+          aria-hidden
+          className="absolute inset-0 gradient-hero opacity-60 pointer-events-none"
+          animate={{ backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        />
         <div className="relative">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Run your business with clarity.</h2>
           <p className="mt-4 text-muted-foreground">Start free. No credit card. Set up in under a minute.</p>
-          <Link to="/signup"><Button size="lg" className="mt-8 gap-2 rounded-full px-7">Get started free <ArrowRight className="h-4 w-4" /></Button></Link>
+          <Link to="/signup"><motion.div className="inline-block" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}><Button size="lg" className="mt-8 gap-2 rounded-full px-7">Get started free <ArrowRight className="h-4 w-4" /></Button></motion.div></Link>
           <div className="mt-6 flex items-center justify-center gap-6 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> Free forever plan</span>
             <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> Bank-grade security</span>
             <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> Cancel anytime</span>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
@@ -296,7 +330,7 @@ function CTA() {
 function Footer() {
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto max-w-7xl px-6 py-12">
+      <Reveal direction="up" className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-center gap-2">
@@ -322,7 +356,7 @@ function Footer() {
           <div className="text-xs text-muted-foreground">© {new Date().getFullYear()} Zentriq. All rights reserved.</div>
           <div className="text-xs text-muted-foreground">Built for founders. Designed for clarity.</div>
         </div>
-      </div>
+      </Reveal>
     </footer>
   );
 }
