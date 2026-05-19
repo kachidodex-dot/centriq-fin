@@ -3,7 +3,6 @@ import { ArrowRight, Sparkles, BarChart3, Brain, ShieldCheck, TrendingUp, Zap, C
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/zentriq-logo.jpeg";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Reveal, StaggerContainer, StaggerItem, FloatY } from "@/components/motion/reveal";
 
 export const Route = createFileRoute("/")({
