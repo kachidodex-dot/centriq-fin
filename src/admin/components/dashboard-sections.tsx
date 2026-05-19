@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 interface SectionProps {
-  title: string;
+  title?: string;
   description?: string;
   children: ReactNode;
   action?: ReactNode;
@@ -15,15 +15,17 @@ export function DashboardSection({
 }: SectionProps) {
   return (
     <div className="mt-8 first:mt-0">
-      <div className="flex items-start justify-between gap-4 mb-6">
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-          {description && (
-            <p className="mt-1 text-sm text-gray-600">{description}</p>
-          )}
+      {(title || description || action) && (
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <div>
+            {title && <h2 className="text-xl font-bold text-gray-900">{title}</h2>}
+            {description && (
+              <p className="mt-1 text-sm text-gray-600">{description}</p>
+            )}
+          </div>
+          {action}
         </div>
-        {action}
-      </div>
+      )}
       {children}
     </div>
   );
