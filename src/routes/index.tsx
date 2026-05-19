@@ -81,8 +81,8 @@ function Hero() {
             </StaggerItem>
             <StaggerItem>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link to="/signup"><motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}><Button size="lg" className="gap-2 rounded-full px-6">Try it for free <ArrowRight className="h-4 w-4" /></Button></motion.div></Link>
-              <Link to="/login"><motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}><Button size="lg" variant="outline" className="rounded-full px-6">Learn more</Button></motion.div></Link>
+              <Link to="/signup"><Button size="lg" className="gap-2 rounded-full px-6 transition-transform hover:scale-[1.02]">Try it for free <ArrowRight className="h-4 w-4" /></Button></Link>
+              <Link to="/login"><Button size="lg" variant="outline" className="rounded-full px-6 transition-transform hover:scale-[1.02]">Learn more</Button></Link>
             </div>
             </StaggerItem>
             <StaggerItem>
