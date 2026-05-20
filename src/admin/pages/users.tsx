@@ -174,7 +174,7 @@ export function AdminUsersPage() {
                           Starter: "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950",
                           Pro: "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950",
                           Enterprise: "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950",
-                        }[user.plan]
+                        }[user.plan as "Starter" | "Pro" | "Enterprise"]
                       }`}
                     >
                       {user.plan}
