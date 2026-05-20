@@ -40,7 +40,7 @@ function LoginPage() {
           <Link to="/" className="flex items-center gap-3 font-semibold group">
             <div className="relative">
               <div className="absolute inset-0 rounded-2xl bg-primary-foreground/30 blur-xl animate-pulse-glow" />
-              <img src={logo} alt="Zentriq" className="relative h-14 w-14 rounded-2xl object-contain shadow-2xl ring-2 ring-primary-foreground/30 transition-transform duration-700 group-hover:rotate-[360deg] group-hover:scale-110" />
+              <img src={logo} alt="Zentriq" className="relative h-14 w-14 rounded-full object-contain shadow-2xl ring-2 ring-primary-foreground/30 transition-transform duration-700 group-hover:rotate-[360deg] group-hover:scale-110" />
             </div>
             <span className="text-2xl tracking-tight">Zentriq</span>
           </Link>
@@ -50,7 +50,7 @@ function LoginPage() {
       </div>
       <div className="flex items-center justify-center p-6 sm:p-10">
         <div className="w-full max-w-md">
-          <Link to="/" className="lg:hidden flex items-center gap-2 font-semibold mb-8"><img src={logo} alt="Zentriq" className="h-10 w-10 rounded-lg object-contain" /> Zentriq</Link>
+          <Link to="/" className="lg:hidden flex items-center gap-2 font-semibold mb-8"><img src={logo} alt="Zentriq" className="h-10 w-10 rounded-full object-contain" /> Zentriq</Link>
           <h1 className="text-2xl font-bold tracking-tight">Sign in</h1>
           <p className="mt-1 text-sm text-muted-foreground">Welcome back. Let's check the numbers.</p>
           <form onSubmit={onSubmit} className="mt-8 space-y-4">

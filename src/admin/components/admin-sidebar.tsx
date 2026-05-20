@@ -60,7 +60,7 @@ export function AdminSidebar() {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="border-b border-gray-200 dark:border-gray-800 px-6 py-6">
-            <img src={logo} alt="Zentriq" className="h-8 w-auto" />
+            <img src={logo} alt="Zentriq" className="h-8 w-8 rounded-full object-contain" />
             <span className="ml-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
               Admin
             </span>

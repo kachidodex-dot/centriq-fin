@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Logo({ className = "h-8 w-8" }: { className?: string }) {
-  return <img src={logo} alt="Zentriq" className={`${className} rounded-lg object-contain shadow-soft`} />;
+  return <img src={logo} alt="Zentriq" className={`${className} rounded-full object-contain shadow-soft`} />;
 }
 
 function Nav() {

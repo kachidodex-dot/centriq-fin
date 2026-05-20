@@ -46,7 +46,7 @@ function Dashboard() {
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div className="flex items-start gap-4">
-          <img src={logo} alt="Zentriq" className="hidden sm:block h-14 w-14 rounded-2xl object-contain shadow-glow ring-1 ring-primary/20" />
+          <img src={logo} alt="Zentriq" className="hidden sm:block h-14 w-14 rounded-full object-contain shadow-glow ring-1 ring-primary/20" />
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse-glow" /> Live overview
