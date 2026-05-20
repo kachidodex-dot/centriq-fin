@@ -4,6 +4,7 @@ import appCss from "../styles.css?url";
 import logo from "@/assets/zentriq-logo.jpeg";
 import { AuthProvider } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/sonner";
+import { InitialLoader } from "@/components/loader";
 
 function NotFoundComponent() {
   return (
@@ -78,6 +79,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <InitialLoader />
         <Outlet />
         <Toaster />
       </AuthProvider>
