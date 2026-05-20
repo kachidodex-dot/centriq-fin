@@ -1,23 +1,47 @@
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate login
-    setTimeout(() => {
-      window.location.href = "/admin";
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error || !data.session) {
+        toast.error(error?.message || "Invalid credentials");
+        setIsLoading(false);
+        return;
+      }
+      const { data: role } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", data.session.user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      if (!role) {
+        await supabase.auth.signOut();
+        toast.error("This account does not have admin access.");
+        setIsLoading(false);
+        return;
+      }
+      toast.success("Welcome back, admin");
+      navigate({ to: "/admin" });
+    } catch (err: any) {
+      toast.error(err?.message || "Sign-in failed");
+    } finally {
       setIsLoading(false);
-    }, 500);
+    }
   };
 
   return (
@@ -119,13 +143,6 @@ export function AdminLoginPage() {
               )}
             </Button>
           </form>
-
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 rounded-lg bg-blue-400/10 border border-blue-400/30">
-            <p className="text-xs font-medium text-blue-200 mb-2">Demo Credentials:</p>
-            <p className="text-xs text-blue-100">Email: admin@zentriq.com</p>
-            <p className="text-xs text-blue-100">Password: demo123456</p>
-          </div>
 
           {/* Footer */}
           <p className="mt-6 text-center text-sm text-purple-200">
