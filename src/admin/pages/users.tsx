@@ -27,7 +27,7 @@ const planColors = {
 };
 
 export function AdminUsersPage() {
-  const [users, setUsers] = useState(mockUsers);
+  const [users, setUsers] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,15 +35,9 @@ export function AdminUsersPage() {
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const realUsers = await fetchRealUsers();
-        if (realUsers.length > 0) {
-          setUsers(realUsers);
-        } else {
-          setUsers(mockUsers);
-        }
+        setUsers(await fetchRealUsers());
       } catch (error) {
         console.error("Failed to load users:", error);
-        setUsers(mockUsers);
       } finally {
         setLoading(false);
       }
