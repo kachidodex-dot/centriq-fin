@@ -109,7 +109,7 @@ export function AdminOverviewPage() {
         description="Latest platform events and user actions"
       >
         <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
-          <ActivityFeed items={mockActivity} />
+          <ActivityFeed items={[]} />
         </div>
       </DashboardSection>
 
