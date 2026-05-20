@@ -8,7 +8,7 @@ import { InsightsPanel } from "@/components/dashboard/insights-panel";
 import { TransactionTable } from "@/components/transactions/transaction-table";
 import { TransactionForm } from "@/components/transactions/transaction-form";
 import { useTransactions, useProfile } from "@/hooks/use-data";
-import { formatCurrency } from "@/lib/format";
+import Currency from "@/components/ui/currency";
 import { generateInsights, healthScore } from "@/lib/insights";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -61,9 +61,9 @@ function Dashboard() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Total income" value={formatCurrency(income, currency)} icon={<TrendingUp className="h-4 w-4" />} accent="success" />
-        <StatCard label="Total expenses" value={formatCurrency(expenses, currency)} icon={<TrendingDown className="h-4 w-4" />} accent="destructive" />
-        <StatCard label="Net profit" value={formatCurrency(profit, currency)} icon={<Wallet className="h-4 w-4" />} accent="primary" sub={profit >= 0 ? "In the green" : "In the red"} />
+        <StatCard label="Total income" value={<Currency amount={income} currency={currency} />} icon={<TrendingUp className="h-4 w-4" />} accent="success" />
+        <StatCard label="Total expenses" value={<Currency amount={expenses} currency={currency} />} icon={<TrendingDown className="h-4 w-4" />} accent="destructive" />
+        <StatCard label="Net profit" value={<Currency amount={profit} currency={currency} />} icon={<Wallet className="h-4 w-4" />} accent="primary" sub={profit >= 0 ? "In the green" : "In the red"} />
         <StatCard label="Health score" value={`${score}/100`} icon={<Activity className="h-4 w-4" />} accent={score >= 70 ? "success" : score >= 50 ? "warning" : "destructive"} />
       </div>
 

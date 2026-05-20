@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export function StatCard({ label, value, icon, accent, sub }: { label: string; value: string; icon?: ReactNode; accent?: "primary" | "success" | "warning" | "destructive"; sub?: string }) {
+export function StatCard({ label, value, icon, accent, sub }: { label: string; value: ReactNode; icon?: ReactNode; accent?: "primary" | "success" | "warning" | "destructive"; sub?: string }) {
   const accentMap = {
     primary: "from-primary/30 to-primary/5 text-primary ring-primary/30",
     success: "from-success/30 to-success/5 text-success ring-success/30",

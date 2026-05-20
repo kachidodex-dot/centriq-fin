@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { TrendingUp, TrendingDown, Wallet, Award } from "lucide-react";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { useTransactions, useProfile } from "@/hooks/use-data";
-import { formatCurrency } from "@/lib/format";
+import Currency from "@/components/ui/currency";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
 
 export const Route = createFileRoute("/_authenticated/monthly")({
@@ -46,9 +46,9 @@ function MonthlyPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="This month income" value={formatCurrency(monthIncome, currency)} icon={<TrendingUp className="h-4 w-4" />} accent="success" />
-        <StatCard label="This month expenses" value={formatCurrency(monthExpenses, currency)} icon={<TrendingDown className="h-4 w-4" />} accent="destructive" />
-        <StatCard label="Profit / loss" value={formatCurrency(monthProfit, currency)} icon={<Wallet className="h-4 w-4" />} accent="primary" />
+        <StatCard label="This month income" value={<Currency amount={monthIncome} currency={currency} />} icon={<TrendingUp className="h-4 w-4" />} accent="success" />
+        <StatCard label="This month expenses" value={<Currency amount={monthExpenses} currency={currency} />} icon={<TrendingDown className="h-4 w-4" />} accent="destructive" />
+        <StatCard label="Profit / loss" value={<Currency amount={monthProfit} currency={currency} />} icon={<Wallet className="h-4 w-4" />} accent="primary" />
         <StatCard label="Top category" value={topCat} icon={<Award className="h-4 w-4" />} accent="warning" />
       </div>
 

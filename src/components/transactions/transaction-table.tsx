@@ -2,7 +2,8 @@ import { type Transaction } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
-import { formatCurrency, formatDate } from "@/lib/format";
+import { formatDate } from "@/lib/format";
+import Currency from "@/components/ui/currency";
 import { cn } from "@/lib/utils";
 
 export function TransactionTable({ txs, currency, onEdit, onDelete }: { txs: Transaction[]; currency: string; onEdit: (t: Transaction) => void; onDelete: (t: Transaction) => void; }) {
@@ -34,7 +35,7 @@ export function TransactionTable({ txs, currency, onEdit, onDelete }: { txs: Tra
                 <td className="px-4 py-3"><Badge variant="secondary" className="capitalize">{t.category}</Badge></td>
                 <td className="px-4 py-3 text-muted-foreground max-w-xs truncate">{t.note || "—"}</td>
                 <td className={cn("px-4 py-3 text-right font-medium tabular-nums whitespace-nowrap", t.type === "income" ? "text-success" : "text-foreground")}>
-                  {t.type === "income" ? "+" : "−"} {formatCurrency(Number(t.amount), currency)}
+                  {t.type === "income" ? "+" : "−"} <Currency amount={Number(t.amount)} currency={currency} />
                 </td>
                 <td className="px-4 py-3 text-right">
                   <div className="inline-flex gap-1">
