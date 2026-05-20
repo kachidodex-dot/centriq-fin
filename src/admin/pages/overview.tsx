@@ -4,16 +4,17 @@ import { AdminLayout } from "@/admin/components/admin-layout";
 import { MetricCard } from "@/admin/components/metric-card";
 import { DashboardSection, ChartContainer } from "@/admin/components/dashboard-sections";
 import { ActivityFeed } from "@/admin/components/activity-feed";
-import { mockActivity, chartData } from "@/admin/lib/mock-data";
 import { fetchDashboardStats } from "@/admin/lib/real-data";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 
 export function AdminOverviewPage() {
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<any>({
     totalUsers: 0,
     totalBusinesses: 0,
     monthlyRevenue: 0,
     activeToday: 0,
+    totalTransactions: 0,
+    charts: { userGrowth: [], transactionVolume: [], revenueByCategory: [] },
   });
   const [loading, setLoading] = useState(true);
 
@@ -39,34 +40,10 @@ export function AdminOverviewPage() {
     >
       {/* Top Metrics */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <MetricCard
-          label="Total Users"
-          value={stats.totalUsers.toLocaleString()}
-          icon={<Users className="h-6 w-6" />}
-          trend={{ value: 12, isPositive: true }}
-          description="Active user accounts"
-        />
-        <MetricCard
-          label="Total Businesses"
-          value={stats.totalBusinesses.toLocaleString()}
-          icon={<Building2 className="h-6 w-6" />}
-          trend={{ value: 8, isPositive: true }}
-          description="Registered businesses"
-        />
-        <MetricCard
-          label="Monthly Revenue"
-          value={`$${(stats.monthlyRevenue / 1000).toFixed(1)}K`}
-          icon={<CreditCard className="h-6 w-6" />}
-          trend={{ value: 24, isPositive: true }}
-          description="MRR this month"
-        />
-        <MetricCard
-          label="Active Today"
-          value={stats.activeToday.toLocaleString()}
-          icon={<TrendingUp className="h-6 w-6" />}
-          trend={{ value: 5, isPositive: true }}
-          description="DAU"
-        />
+        <MetricCard label="Total Users" value={stats.totalUsers.toLocaleString()} icon={<Users className="h-6 w-6" />} description="Registered accounts" />
+        <MetricCard label="Total Businesses" value={stats.totalBusinesses.toLocaleString()} icon={<Building2 className="h-6 w-6" />} description="With business profile" />
+        <MetricCard label="Total Revenue" value={`$${(stats.monthlyRevenue / 1000).toFixed(1)}K`} icon={<CreditCard className="h-6 w-6" />} description="All-time income" />
+        <MetricCard label="Transactions" value={(stats.totalTransactions || 0).toLocaleString()} icon={<TrendingUp className="h-6 w-6" />} description="Recorded to date" />
       </div>
 
       {/* Charts Section */}
@@ -78,7 +55,7 @@ export function AdminOverviewPage() {
           {/* User Growth Chart */}
           <ChartContainer title="User Growth">
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={chartData.userGrowth}>
+              <LineChart data={stats.charts?.userGrowth || []}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis dataKey="month" />
                 <YAxis />
@@ -104,7 +81,7 @@ export function AdminOverviewPage() {
           {/* Transaction Volume Chart */}
           <ChartContainer title="Transaction Volume">
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData.transactionVolume}>
+              <BarChart data={stats.charts?.transactionVolume || []}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis dataKey="month" />
                 <YAxis />
