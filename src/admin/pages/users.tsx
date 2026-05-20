@@ -27,7 +27,7 @@ const planColors = {
 };
 
 export function AdminUsersPage() {
-  const [users, setUsers] = useState(mockUsers);
+  const [users, setUsers] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,15 +35,9 @@ export function AdminUsersPage() {
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const realUsers = await fetchRealUsers();
-        if (realUsers.length > 0) {
-          setUsers(realUsers);
-        } else {
-          setUsers(mockUsers);
-        }
+        setUsers(await fetchRealUsers());
       } catch (error) {
         console.error("Failed to load users:", error);
-        setUsers(mockUsers);
       } finally {
         setLoading(false);
       }
@@ -174,7 +168,7 @@ export function AdminUsersPage() {
                           Starter: "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950",
                           Pro: "text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950",
                           Enterprise: "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950",
-                        }[user.plan]
+                        }[user.plan as "Starter" | "Pro" | "Enterprise"]
                       }`}
                     >
                       {user.plan}

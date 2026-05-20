@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { AdminSidebar } from "./admin-sidebar";
 import { AdminHeader } from "./admin-header";
 import { useTheme } from "@/admin/hooks/use-theme";
+import { useAdminAuth } from "@/admin/hooks/use-admin-auth";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -11,6 +12,15 @@ interface AdminLayoutProps {
 
 export function AdminLayout({ children, title, subtitle }: AdminLayoutProps) {
   useTheme(); // Initialize theme on mount
+  const { checking, isAdmin } = useAdminAuth();
+
+  if (checking || !isAdmin) {
+    return (
+      <div className="min-h-screen grid place-items-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-sm text-gray-500">Verifying admin access…</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">

@@ -107,7 +107,7 @@ export function AdminReportsPage() {
           {/* Daily Signups */}
           <ChartContainer title="Daily Signups (Last Week)">
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData.dailySignups}>
+              <BarChart data={chartData.platformUsage}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis dataKey="day" />
                 <YAxis />

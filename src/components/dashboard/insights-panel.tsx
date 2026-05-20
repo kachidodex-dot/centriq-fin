@@ -1,6 +1,8 @@
 import { Sparkles, Send, Wand2, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { askAssistant } from "@/lib/ai-assistant.functions";
 import type { Transaction } from "@/lib/types";
 import { toast } from "sonner";
@@ -112,13 +114,35 @@ export function InsightsPanel({
           messages.map((m, i) => (
             <div
               key={i}
-              className={`rounded-xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
+              className={`rounded-xl px-3 py-2 text-sm leading-relaxed ${
                 m.role === "user"
                   ? "ml-6 bg-primary/15 border border-primary/30 text-foreground"
                   : "mr-6 border border-border/60 bg-card/40"
               }`}
             >
-              {m.content}
+              {m.role === "user" ? (
+                <span className="whitespace-pre-wrap">{m.content}</span>
+              ) : (
+                <div className="ai-prose">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                      strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
+                      ul: ({ children }) => <ul className="my-1.5 ml-4 list-disc space-y-1">{children}</ul>,
+                      ol: ({ children }) => <ol className="my-1.5 ml-4 list-decimal space-y-1">{children}</ol>,
+                      li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+                      h1: ({ children }) => <p className="font-semibold mb-1">{children}</p>,
+                      h2: ({ children }) => <p className="font-semibold mb-1">{children}</p>,
+                      h3: ({ children }) => <p className="font-semibold mb-1">{children}</p>,
+                      hr: () => <div className="my-2 border-t border-border/40" />,
+                      code: ({ children }) => <code className="rounded bg-muted px-1 py-0.5 text-[0.85em]">{children}</code>,
+                    }}
+                  >
+                    {m.content}
+                  </ReactMarkdown>
+                </div>
+              )}
             </div>
           ))
         )}
