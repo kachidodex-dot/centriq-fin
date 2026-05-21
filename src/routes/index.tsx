@@ -324,15 +324,15 @@ function Footer() {
             </div>
             <p className="mt-3 text-sm text-muted-foreground max-w-xs">A modern AI financial operating system for small businesses.</p>
           </div>
-          {[
-            { title: "Product", links: ["Features", "Dashboard", "Pricing", "Security"] },
-            { title: "Company", links: ["About", "Blog", "Customers", "Contact"] },
-            { title: "Legal", links: ["Privacy", "Terms", "Cookies"] },
-          ].map((c) => (
+          {([
+            { title: "Product", links: [{ label: "Features", to: "/" }, { label: "Dashboard", to: "/dashboard" }, { label: "Pricing", to: "/" }, { label: "Security", to: "/" }] },
+            { title: "Company", links: [{ label: "About", to: "/" }, { label: "Blog", to: "/blog" }, { label: "Customers", to: "/customers" }, { label: "Contact", to: "/contact" }] },
+            { title: "Legal", links: [{ label: "Privacy", to: "/privacy" }, { label: "Terms", to: "/terms" }, { label: "Cookies", to: "/cookies" }] },
+          ] as const).map((c) => (
             <div key={c.title}>
               <div className="text-sm font-semibold">{c.title}</div>
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                {c.links.map((l) => <li key={l}><a href="#" className="hover:text-foreground transition">{l}</a></li>)}
+                {c.links.map((l) => <li key={l.label}><Link to={l.to} className="hover:text-foreground transition">{l.label}</Link></li>)}
               </ul>
             </div>
           ))}
