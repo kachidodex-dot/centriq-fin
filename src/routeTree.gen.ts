@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CustomersRouteImport } from './routes/customers'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
@@ -41,6 +42,11 @@ const LoginRoute = LoginRouteImport.update({
 const CustomersRoute = CustomersRouteImport.update({
   id: '/customers',
   path: '/customers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -122,6 +128,7 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/customers': typeof CustomersRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/customers': typeof CustomersRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/customers': typeof CustomersRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/blog'
+    | '/contact'
     | '/customers'
     | '/login'
     | '/signup'
@@ -202,6 +212,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/blog'
+    | '/contact'
     | '/customers'
     | '/login'
     | '/signup'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/blog'
+    | '/contact'
     | '/customers'
     | '/login'
     | '/signup'
@@ -243,6 +255,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   BlogRoute: typeof BlogRoute
+  ContactRoute: typeof ContactRoute
   CustomersRoute: typeof CustomersRoute
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
@@ -277,6 +290,13 @@ declare module '@tanstack/react-router' {
       path: '/customers'
       fullPath: '/customers'
       preLoaderRoute: typeof CustomersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -409,6 +429,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   BlogRoute: BlogRoute,
+  ContactRoute: ContactRoute,
   CustomersRoute: CustomersRoute,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
