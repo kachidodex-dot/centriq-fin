@@ -14,6 +14,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CustomersRouteImport } from './routes/customers'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
@@ -54,6 +55,11 @@ const LoginRoute = LoginRouteImport.update({
 const CustomersRoute = CustomersRouteImport.update({
   id: '/customers',
   path: '/customers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/customers': typeof CustomersRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/customers': typeof CustomersRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/customers': typeof CustomersRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/'
     | '/blog'
     | '/contact'
+    | '/cookies'
     | '/customers'
     | '/login'
     | '/privacy'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/'
     | '/blog'
     | '/contact'
+    | '/cookies'
     | '/customers'
     | '/login'
     | '/privacy'
@@ -256,6 +267,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/blog'
     | '/contact'
+    | '/cookies'
     | '/customers'
     | '/login'
     | '/privacy'
@@ -280,6 +292,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
+  CookiesRoute: typeof CookiesRoute
   CustomersRoute: typeof CustomersRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -330,6 +343,13 @@ declare module '@tanstack/react-router' {
       path: '/customers'
       fullPath: '/customers'
       preLoaderRoute: typeof CustomersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -470,6 +490,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
+  CookiesRoute: CookiesRoute,
   CustomersRoute: CustomersRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
