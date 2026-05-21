@@ -6,24 +6,26 @@ export async function fetchRealUsers() {
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
-      .limit(10);
+      .order("created_at", { ascending: false })
+      .limit(25);
 
     if (error) {
       console.error("Error fetching users:", error);
       return [];
     }
 
-    return (data || []).map((row, index) => {
+    return (data || []).map((row) => {
       const user = row as any;
+      const name = user.business_name || "Unnamed business";
       return {
-      id: user.id || `user_${index}`,
-      name: user.full_name || "Unknown User",
-      email: user.email || `user${index}@example.com`,
-      business: user.full_name?.split(" ")[0] || "Business",
-      plan: ["Starter", "Pro", "Enterprise"][index % 3] as any,
-      status: ["active", "suspended", "inactive"][index % 3] as any,
-      joinDate: new Date(user.created_at || Date.now()).toISOString().split("T")[0],
-      avatar: user.full_name?.substring(0, 2).toUpperCase() || "U",
+        id: user.id,
+        name,
+        email: `${String(user.id).slice(0, 8)}…`,
+        business: name,
+        plan: "Starter" as const,
+        status: "active" as const,
+        joinDate: new Date(user.created_at || Date.now()).toISOString().split("T")[0],
+        avatar: name.substring(0, 2).toUpperCase(),
       };
     });
   } catch (error) {
@@ -35,28 +37,27 @@ export async function fetchRealUsers() {
 // Fetch real transactions
 export async function fetchRealTransactions() {
   try {
-    // This assumes you have a transactions table
     const { data, error } = await supabase
       .from("transactions")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(10);
+      .limit(25);
 
     if (error || !data) {
       console.error("Error fetching transactions:", error);
       return [];
     }
 
-    return data.map((row, index) => {
+    return data.map((row) => {
       const txn = row as any;
       return {
-      id: txn.id || `txn_${index}`,
-      user: txn.user_name || "Unknown User",
-      category: txn.category || "General",
-      amount: txn.amount || 0,
-      type: txn.type === "debit" ? "debit" : "credit",
-      date: new Date(txn.created_at).toISOString().split("T")[0],
-      status: txn.status || "completed",
+        id: txn.id,
+        user: `${String(txn.user_id).slice(0, 8)}…`,
+        category: txn.category || "general",
+        amount: Number(txn.amount) || 0,
+        type: txn.type === "expense" ? "debit" : "credit",
+        date: (txn.date || txn.created_at || "").toString().split("T")[0],
+        status: "completed" as const,
       };
     });
   } catch (error) {
@@ -70,7 +71,7 @@ export async function fetchDashboardStats() {
   try {
     const [usersRes, transactionsRes] = await Promise.all([
       supabase.from("profiles").select("id", { count: "exact", head: true }),
-      supabase.from("transactions").select("amount, type, date, category", { count: "exact" }),
+      supabase.from("transactions").select("amount, type, date, category, user_id", { count: "exact" }),
     ]);
 
     const totalUsers = usersRes.count || 0;
@@ -79,6 +80,12 @@ export async function fetchDashboardStats() {
     const totalRevenue = txs
       .filter(t => t.type === "income")
       .reduce((sum, t) => sum + Number(t.amount || 0), 0);
+
+    // Real "active today" = users who logged a transaction today
+    const today = new Date().toISOString().split("T")[0];
+    const activeToday = new Set(
+      txs.filter(t => (t.date || "").startsWith(today)).map(t => t.user_id)
+    ).size;
 
     // Build monthly series from real transactions (last 6 months)
     const now = new Date();
@@ -107,9 +114,9 @@ export async function fetchDashboardStats() {
 
     return {
       totalUsers,
-      totalBusinesses: Math.floor(totalUsers * 0.65),
+      totalBusinesses: totalUsers,
       monthlyRevenue: totalRevenue,
-      activeToday: Math.floor(totalUsers * 0.31),
+      activeToday,
       totalTransactions,
       charts: { userGrowth, transactionVolume, revenueByCategory },
     };

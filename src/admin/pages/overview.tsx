@@ -117,19 +117,19 @@ export function AdminOverviewPage() {
       <DashboardSection title="Quick Stats">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">New Signups (Today)</h3>
-            <p className="mt-2 text-3xl font-bold text-blue-600 dark:text-blue-400">47</p>
-            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">↑ 12% vs yesterday</p>
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Today</h3>
+            <p className="mt-2 text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.activeToday ?? 0}</p>
+            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">Users with activity today</p>
           </div>
           <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
             <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Processed Transactions</h3>
-            <p className="mt-2 text-3xl font-bold text-green-600 dark:text-green-400">1,847</p>
-            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">Total value: $2.4M</p>
+            <p className="mt-2 text-3xl font-bold text-green-600 dark:text-green-400">{(stats.totalTransactions || 0).toLocaleString()}</p>
+            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">All-time recorded</p>
           </div>
           <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6">
-            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">AI Requests</h3>
-            <p className="mt-2 text-3xl font-bold text-purple-600 dark:text-purple-400">12,482</p>
-            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">↑ 8% vs last week</p>
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Revenue</h3>
+            <p className="mt-2 text-3xl font-bold text-purple-600 dark:text-purple-400">${(stats.monthlyRevenue || 0).toLocaleString()}</p>
+            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">All income transactions</p>
           </div>
         </div>
       </DashboardSection>

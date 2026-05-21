@@ -1,5 +1,7 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { Outlet, Link, createRootRouteWithContext, useRouter, HeadContent, Scripts } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import appCss from "../styles.css?url";
 import logo from "@/assets/zentriq-logo.jpeg";
 import { AuthProvider } from "@/hooks/use-auth";
@@ -80,9 +82,23 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <InitialLoader />
+        <AuthInvalidator />
         <Outlet />
         <Toaster />
       </AuthProvider>
     </QueryClientProvider>
   );
+}
+
+function AuthInvalidator() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      router.invalidate();
+      queryClient.invalidateQueries();
+    });
+    return () => subscription.unsubscribe();
+  }, [router, queryClient]);
+  return null;
 }
