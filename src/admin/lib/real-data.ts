@@ -71,7 +71,7 @@ export async function fetchDashboardStats() {
   try {
     const [usersRes, transactionsRes] = await Promise.all([
       supabase.from("profiles").select("id", { count: "exact", head: true }),
-      supabase.from("transactions").select("amount, type, date, category", { count: "exact" }),
+      supabase.from("transactions").select("amount, type, date, category, user_id", { count: "exact" }),
     ]);
 
     const totalUsers = usersRes.count || 0;
