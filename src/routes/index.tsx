@@ -157,24 +157,43 @@ function DashboardPreview() {
 
 function Stats() {
   const items = [
-    { value: "1.2M+", label: "Transactions tracked", body: "Helping users stay on top of every dollar." },
-    { value: "$85M+", label: "Managed assets", body: "Total funds tracked across all accounts." },
-    { value: "92%", label: "Users feel in control", body: "Report better financial clarity within 30 days." },
+    {
+      title: "AI Financial Intelligence",
+      description:
+        "Get AI-powered insights that help you understand spending patterns, profitability, and business performance in real time.",
+    },
+    {
+      title: "Real-Time Financial Visibility",
+      description:
+        "Track income, expenses, and cashflow from one clean modern dashboard built for growing businesses.",
+    },
+    {
+      title: "Built for Modern Growth",
+      description:
+        "Designed for startups, SMEs, and modern teams that want smarter financial clarity without complexity.",
+    },
   ];
+
   return (
-    <section id="stats" className="bg-secondary/40 py-24">
+    <section id="stats" className="bg-secondary/10 py-24">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal direction="up" className="mx-auto max-w-2xl text-center">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Real savings, real results</h2>
-          <p className="mt-4 text-muted-foreground">From everyday expenses to growth investments — Zentriq helps you understand every move without the hassle.</p>
+          <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+            From everyday expenses to long-term growth decisions, Zentriq gives modern businesses clarity over every financial move.
+          </p>
         </Reveal>
-        <StaggerContainer className="mt-14 grid gap-6 sm:grid-cols-3" stagger={0.12}>
-          {items.map((s, i) => (
-            <StaggerItem key={s.label} direction="up">
-              <div className={`rounded-2xl border border-border bg-card p-8 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated ${i === 1 ? "sm:-translate-y-4" : ""}`}>
-                <div className="text-5xl font-bold tracking-tight">{s.value}</div>
-                <div className="mt-3 text-xs uppercase tracking-[0.12em] font-semibold text-muted-foreground">{s.label}</div>
-                <p className="mt-4 text-sm text-muted-foreground">{s.body}</p>
+        <StaggerContainer className="mt-14 grid gap-6 lg:grid-cols-3" stagger={0.14}>
+          {items.map((item, index) => (
+            <StaggerItem key={item.title} direction="up" className="group">
+              <div className={
+                "rounded-[2rem] border border-border bg-card p-8 shadow-soft transition duration-300 hover:-translate-y-2 hover:shadow-elevated hover:bg-background/70"
+              }>
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-3xl bg-primary/10 text-primary shadow-sm transition duration-300 group-hover:bg-primary/15">
+                  <span className="text-lg font-semibold">{index + 1}</span>
+                </div>
+                <h3 className="mt-6 text-xl font-semibold tracking-tight text-foreground">{item.title}</h3>
+                <p className="mt-4 text-sm leading-7 text-muted-foreground">{item.description}</p>
               </div>
             </StaggerItem>
           ))}
