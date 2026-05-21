@@ -17,7 +17,29 @@ export function TransactionTable({ txs, currency, onEdit, onDelete }: { txs: Tra
   }
   return (
     <div className="glow-card rounded-2xl overflow-hidden shadow-soft">
-      <div className="overflow-x-auto">
+      <div className="md:hidden p-4 space-y-3">
+        {txs.map((t) => (
+          <div key={t.id} className="rounded-lg border border-border/60 bg-card/30 p-3 flex items-start justify-between">
+            <div className="min-w-0">
+              <div className="text-sm font-medium">{formatDate(t.date)}</div>
+              <div className="mt-1 text-xs text-muted-foreground flex items-center gap-2">
+                <Badge variant="secondary" className="capitalize">{t.category}</Badge>
+                <span className="truncate max-w-[160px]">{t.note || "—"}</span>
+              </div>
+            </div>
+            <div className="text-right ml-4">
+              <div className={cn("font-medium tabular-nums", t.type === "income" ? "text-success" : "text-foreground")}>
+                {t.type === "income" ? "+" : "−"} <Currency amount={Number(t.amount)} currency={currency} />
+              </div>
+              <div className="mt-2 inline-flex gap-1">
+                <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => onEdit(t)}><Pencil className="h-3.5 w-3.5" /></Button>
+                <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive" onClick={() => onDelete(t)}><Trash2 className="h-3.5 w-3.5" /></Button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/30 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
             <tr>

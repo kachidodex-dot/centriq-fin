@@ -58,7 +58,7 @@ export function CategoryChart({ txs }: { txs: Transaction[] }) {
     <div className="glow-card rounded-2xl p-5 shadow-soft h-full">
       <h3 className="font-semibold">Spending by Category</h3>
       <p className="text-xs text-muted-foreground">Where your money goes</p>
-      <div className="mt-4 h-64">
+      <div className="mt-4 h-48 sm:h-64">
         {data.length === 0 ? (
           <div className="grid h-full place-items-center text-sm text-muted-foreground">No expenses yet</div>
         ) : (
