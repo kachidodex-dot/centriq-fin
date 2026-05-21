@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Filter, DollarSign, TrendingUp, AlertCircle } from "lucide-react";
 import { AdminLayout } from "@/admin/components/admin-layout";
 import { DashboardSection, ChartContainer } from "@/admin/components/dashboard-sections";
@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { mockTransactions, chartData } from "@/admin/lib/mock-data";
+import { fetchRealTransactions, fetchDashboardStats } from "@/admin/lib/real-data";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const statusColors = {
@@ -23,8 +23,18 @@ const statusColors = {
 export function AdminTransactionsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [volumeSeries, setVolumeSeries] = useState<{ month: string; value: number }[]>([]);
 
-  const filteredTransactions = mockTransactions.filter((txn) => {
+  useEffect(() => {
+    (async () => {
+      const [txs, stats] = await Promise.all([fetchRealTransactions(), fetchDashboardStats()]);
+      setTransactions(txs);
+      setVolumeSeries(stats.charts?.transactionVolume || []);
+    })();
+  }, []);
+
+  const filteredTransactions = transactions.filter((txn) => {
     const matchesSearch =
       txn.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
       txn.category.toLowerCase().includes(searchTerm.toLowerCase());
@@ -32,8 +42,8 @@ export function AdminTransactionsPage() {
     return matchesSearch && matchesStatus;
   });
 
-  const totalVolume = mockTransactions.reduce((sum, t) => sum + t.amount, 0);
-  const largeTransactions = mockTransactions.filter((t) => t.amount > 10000);
+  const totalVolume = transactions.reduce((sum, t) => sum + t.amount, 0);
+  const largeTransactions = transactions.filter((t) => t.amount > 10000);
 
   return (
     <AdminLayout
@@ -45,7 +55,7 @@ export function AdminTransactionsPage() {
         <div className="rounded-lg border border-gray-200 bg-white p-4">
           <p className="text-sm text-gray-600">Total Transactions</p>
           <p className="mt-1 text-2xl font-bold text-gray-900">
-            {mockTransactions.length}
+            {transactions.length}
           </p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-4">
@@ -57,7 +67,7 @@ export function AdminTransactionsPage() {
         <div className="rounded-lg border border-gray-200 bg-white p-4">
           <p className="text-sm text-gray-600">Completed</p>
           <p className="mt-1 text-2xl font-bold text-blue-600">
-            {mockTransactions.filter((t) => t.status === "completed").length}
+            {transactions.filter((t) => t.status === "completed").length}
           </p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-4">
@@ -72,7 +82,7 @@ export function AdminTransactionsPage() {
       <DashboardSection title="Transaction Trends">
         <ChartContainer title="Volume Over Time">
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={chartData.transactionVolume}>
+            <LineChart data={volumeSeries}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis dataKey="month" />
               <YAxis />
