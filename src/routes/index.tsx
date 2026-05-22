@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, BarChart3, Brain, ShieldCheck, TrendingUp, Zap, Check, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/zentriq-logo.jpeg";
+import testimonialMaya from "@/assets/testimonial-maya.jpeg";
 import { useEffect, useState } from "react";
 import { Reveal, StaggerContainer, StaggerItem, FloatY } from "@/components/motion/reveal";
 
@@ -207,11 +208,16 @@ function Testimonial() {
   return (
     <section id="testimonial" className="mx-auto max-w-7xl px-6 py-24">
       <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-        <Reveal direction="right" className="relative aspect-[4/5] max-w-md rounded-3xl bg-gradient-to-br from-accent to-secondary overflow-hidden shadow-elevated">
-          <div className="absolute inset-0 grid place-items-center">
-            <div className="grid h-16 w-16 place-items-center rounded-full bg-primary text-primary-foreground shadow-glow">
-              <div className="ml-1 h-0 w-0 border-y-8 border-y-transparent border-l-[12px] border-l-primary-foreground" />
-            </div>
+        <Reveal direction="right" className="relative mx-auto w-full max-w-md">
+          <div aria-hidden className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-primary/20 via-chart-2/10 to-transparent blur-2xl" />
+          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-border/60 bg-muted shadow-elevated ring-1 ring-black/5">
+            <img
+              src={testimonialMaya}
+              alt="Maya Chen, Founder of Bloom Studio"
+              loading="lazy"
+              className="h-full w-full object-cover object-top"
+            />
+            <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
           </div>
         </Reveal>
         <Reveal direction="left">
