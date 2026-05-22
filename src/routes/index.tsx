@@ -213,7 +213,7 @@ function Testimonial() {
           <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-border/60 bg-muted shadow-elevated ring-1 ring-black/5">
             <img
               src={testimonialMaya}
-              alt="Maya Chen, Founder of Bloom Studio"
+              alt="Chiamaka Obilor, Founder of Pectrids"
               loading="lazy"
               className="h-full w-full object-cover object-top"
             />
@@ -232,10 +232,10 @@ function Testimonial() {
             Within weeks, I found leaks in my spending I didn't even realize.
           </p>
           <div className="mt-8 flex items-center gap-3">
-            <div className="grid h-12 w-12 place-items-center rounded-full bg-primary/10 font-semibold text-primary">MC</div>
+            <div className="grid h-12 w-12 place-items-center rounded-full bg-primary/10 font-semibold text-primary">CO</div>
             <div>
-              <div className="font-semibold">Maya Chen</div>
-              <div className="text-sm text-muted-foreground">Founder, Bloom Studio</div>
+              <div className="font-semibold">Chiamaka Obilor</div>
+              <div className="text-sm text-muted-foreground">Founder, Pectrids</div>
             </div>
           </div>
         </Reveal>

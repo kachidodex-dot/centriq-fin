@@ -58,40 +58,17 @@ export function CategoryChart({ txs }: { txs: Transaction[] }) {
     <div className="glow-card rounded-2xl p-5 shadow-soft h-full">
       <h3 className="font-semibold">Spending by Category</h3>
       <p className="text-xs text-muted-foreground">Where your money goes</p>
-      <div className="mt-4 h-56 sm:h-64">
+      <div className="mt-4 h-48 sm:h-64">
         {data.length === 0 ? (
           <div className="grid h-full place-items-center text-sm text-muted-foreground">No expenses yet</div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart margin={{ top: 12, right: 0, bottom: 28, left: 0 }}>
-              <Pie
-                data={data}
-                dataKey="value"
-                nameKey="name"
-                innerRadius="40%"
-                outerRadius="65%"
-                paddingAngle={3}
-                stroke="var(--color-background)"
-                strokeWidth={2}
-              >
+            <PieChart>
+              <Pie data={data} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90} paddingAngle={3} stroke="var(--color-background)" strokeWidth={2}>
                 {data.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Pie>
-              <Tooltip
-                contentStyle={{
-                  background: "var(--color-popover)",
-                  border: "1px solid var(--color-border)",
-                  borderRadius: 12,
-                  boxShadow: "var(--shadow-elevated)",
-                }}
-              />
-              <Legend
-                layout="horizontal"
-                verticalAlign="bottom"
-                align="center"
-                iconType="circle"
-                iconSize={8}
-                wrapperStyle={{ fontSize: 12, marginTop: 8, whiteSpace: "normal" }}
-              />
+              <Tooltip contentStyle={{ background: "var(--color-popover)", border: "1px solid var(--color-border)", borderRadius: 12, boxShadow: "var(--shadow-elevated)" }} />
+              <Legend wrapperStyle={{ fontSize: 12 }} />
             </PieChart>
           </ResponsiveContainer>
         )}
