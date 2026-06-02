@@ -7,7 +7,7 @@ import Currency from "@/components/ui/currency";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
 
 export const Route = createFileRoute("/_authenticated/monthly")({
-  head: () => ({ meta: [{ title: "Monthly Summary — Zentriq" }] }),
+  head: () => ({ meta: [{ title: "Monthly Summary — Ryport" }] }),
   component: MonthlyPage,
 });
 

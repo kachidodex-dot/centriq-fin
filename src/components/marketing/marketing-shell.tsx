@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/zentriq-logo.jpeg";
+import logo from "@/assets/ryport-logo";
 
 function Logo({ className = "h-8 w-8" }: { className?: string }) {
-  return <img src={logo} alt="Zentriq" className={`${className} rounded-full object-contain shadow-soft`} />;
+  return <img src={logo} alt="Ryport" className={`${className} rounded-full object-contain shadow-soft`} />;
 }
 
 function Nav() {
@@ -20,7 +20,7 @@ function Nav() {
       <div className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ${scrolled ? "py-3" : "py-5"}`}>
         <Link to="/" className="flex items-center gap-3 group">
           <Logo className={`transition-all duration-500 ${scrolled ? "h-10 w-10" : "h-12 w-12 ring-2 ring-primary/20"}`} />
-          <span className={`font-bold tracking-tight transition-all duration-500 ${scrolled ? "text-lg" : "text-xl"}`}>Zentriq</span>
+          <span className={`font-bold tracking-tight transition-all duration-500 ${scrolled ? "text-lg" : "text-xl"}`}>Ryport</span>
         </Link>
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
           <Link to="/blog" className="hover:text-foreground transition" activeProps={{ className: "text-foreground" }}>Blog</Link>
@@ -49,7 +49,7 @@ export function SiteFooter() {
           <div>
             <div className="flex items-center gap-2">
               <Logo className="h-7 w-7" />
-              <span className="font-semibold">Zentriq</span>
+              <span className="font-semibold">Ryport</span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground max-w-xs">A modern AI financial operating system for small businesses.</p>
           </div>
@@ -67,7 +67,7 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 sm:flex-row">
-          <div className="text-xs text-muted-foreground">© {new Date().getFullYear()} Zentriq. All rights reserved.</div>
+          <div className="text-xs text-muted-foreground">© {new Date().getFullYear()} Ryport. All rights reserved.</div>
           <div className="text-xs text-muted-foreground">Built for founders. Designed for clarity.</div>
         </div>
       </div>

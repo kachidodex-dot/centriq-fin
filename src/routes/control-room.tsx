@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/control-room")({
-  head: () => ({ meta: [{ title: "Control Room — Zentriq" }] }),
+  head: () => ({ meta: [{ title: "Control Room — Ryport" }] }),
   component: ControlRoomRedirect,
 });
 

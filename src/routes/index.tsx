@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, BarChart3, Brain, ShieldCheck, TrendingUp, Zap, Check, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/zentriq-logo.jpeg";
+import logo from "@/assets/ryport-logo";
 import testimonialMaya from "@/assets/testimonial-maya.jpeg";
 import { useEffect, useState } from "react";
 import { Reveal, StaggerContainer, StaggerItem, FloatY } from "@/components/motion/reveal";
@@ -9,9 +9,9 @@ import { Reveal, StaggerContainer, StaggerItem, FloatY } from "@/components/moti
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Zentriq — AI-powered financial intelligence" },
+      { title: "Ryport — AI-powered financial intelligence" },
       { name: "description", content: "Track money, understand cash flow, and get AI-powered insights for your small business." },
-      { property: "og:title", content: "Zentriq — AI-powered financial intelligence" },
+      { property: "og:title", content: "Ryport — AI-powered financial intelligence" },
       { property: "og:description", content: "A modern AI financial operating system for small businesses." },
     ],
   }),
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Logo({ className = "h-8 w-8" }: { className?: string }) {
-  return <img src={logo} alt="Zentriq" className={`${className} rounded-full object-contain shadow-soft`} />;
+  return <img src={logo} alt="Ryport" className={`${className} rounded-full object-contain shadow-soft`} />;
 }
 
 function Nav() {
@@ -38,11 +38,11 @@ function Nav() {
             <div className={`absolute inset-0 rounded-2xl bg-primary/20 blur-xl transition-all duration-500 ${scrolled ? "opacity-0 scale-90" : "opacity-100 scale-100 animate-pulse-glow"}`} />
             <Logo className={`relative transition-all duration-500 group-hover:rotate-[360deg] group-hover:scale-110 ${scrolled ? "h-10 w-10" : "h-14 w-14 ring-2 ring-primary/20"}`} />
           </div>
-          <span className={`font-bold tracking-tight transition-all duration-500 ${scrolled ? "text-lg" : "text-2xl"}`}>Zentriq</span>
+          <span className={`font-bold tracking-tight transition-all duration-500 ${scrolled ? "text-lg" : "text-2xl"}`}>Ryport</span>
         </Link>
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
           <a href="#features" className="hover:text-foreground transition">Features</a>
-          <a href="#stats" className="hover:text-foreground transition">Why Zentriq</a>
+          <a href="#stats" className="hover:text-foreground transition">Why Ryport</a>
           <a href="#testimonial" className="hover:text-foreground transition">Customers</a>
           <a href="#pricing" className="hover:text-foreground transition">Pricing</a>
         </nav>
@@ -121,7 +121,7 @@ function DashboardPreview() {
               <span className="h-2.5 w-2.5 rounded-full bg-warning/50" />
               <span className="h-2.5 w-2.5 rounded-full bg-success/40" />
             </div>
-            <div className="ml-3 text-[11px] text-muted-foreground">app.zentriq.io / dashboard</div>
+            <div className="ml-3 text-[11px] text-muted-foreground">app.ryport.io / dashboard</div>
           </div>
           <div className="p-5">
             <div className="text-sm font-medium">Good morning, Ryan</div>
@@ -181,7 +181,7 @@ function Stats() {
         <Reveal direction="up" className="mx-auto max-w-2xl text-center">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Real savings, real results</h2>
           <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
-            From everyday expenses to long-term growth decisions, Zentriq gives modern businesses clarity over every financial move.
+            From everyday expenses to long-term growth decisions, Ryport gives modern businesses clarity over every financial move.
           </p>
         </Reveal>
         <StaggerContainer className="mt-14 grid gap-6 lg:grid-cols-3" stagger={0.14}>
@@ -285,7 +285,7 @@ function AiSection() {
           <Reveal direction="right">
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs"><Brain className="h-3.5 w-3.5 text-primary" /> AI Insights</div>
             <h2 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight">Your numbers, explained.</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">Zentriq watches your transactions and tells you what matters — in clear, human language. No spreadsheets, no jargon.</p>
+            <p className="mt-4 text-muted-foreground leading-relaxed">Ryport watches your transactions and tells you what matters — in clear, human language. No spreadsheets, no jargon.</p>
             <ul className="mt-6 space-y-3">
               {["Plain-English summaries every week", "Spot anomalies before they become problems", "Personalized growth recommendations"].map((t) => (
                 <li key={t} className="flex items-start gap-2.5 text-sm">
@@ -345,7 +345,7 @@ function Footer() {
           <div>
             <div className="flex items-center gap-2">
               <Logo className="h-7 w-7" />
-              <span className="font-semibold">Zentriq</span>
+              <span className="font-semibold">Ryport</span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground max-w-xs">A modern AI financial operating system for small businesses.</p>
           </div>
@@ -363,7 +363,7 @@ function Footer() {
           ))}
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 sm:flex-row">
-          <div className="text-xs text-muted-foreground">© {new Date().getFullYear()} Zentriq. All rights reserved.</div>
+          <div className="text-xs text-muted-foreground">© {new Date().getFullYear()} Ryport. All rights reserved.</div>
           <div className="text-xs text-muted-foreground">Built for founders. Designed for clarity.</div>
         </div>
       </Reveal>

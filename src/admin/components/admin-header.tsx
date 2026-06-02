@@ -68,7 +68,7 @@ export function AdminHeader({ title = "Dashboard", subtitle }: AdminHeaderProps)
             <DropdownMenuContent align="end" className="w-56">
               <div className="px-2 py-1.5">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">Admin Account</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">admin@zentriq.com</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">admin@ryport.com</p>
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="flex items-center gap-2">

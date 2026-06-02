@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 
 export function AdminSettingsPage() {
-  const [platformName, setPlatformName] = useState("Zentriq");
+  const [platformName, setPlatformName] = useState("Ryport");
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [aiEnabled, setAiEnabled] = useState(true);
   const [currency, setCurrency] = useState("USD");

@@ -11,10 +11,10 @@ import { MarketingShell, PageHero } from "@/components/marketing/marketing-shell
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Zentriq" },
-      { name: "description", content: "Talk to the Zentriq team. Sales, support, partnerships — we typically reply within one business day." },
-      { property: "og:title", content: "Contact — Zentriq" },
-      { property: "og:description", content: "Get in touch with the Zentriq team." },
+      { title: "Contact — Ryport" },
+      { name: "description", content: "Talk to the Ryport team. Sales, support, partnerships — we typically reply within one business day." },
+      { property: "og:title", content: "Contact — Ryport" },
+      { property: "og:description", content: "Get in touch with the Ryport team." },
     ],
   }),
   component: ContactPage,
@@ -31,7 +31,7 @@ const faqs = [
   { q: "How quickly will I hear back?", a: "Most messages get a personal reply within one business day. Urgent support issues are usually answered the same day." },
   { q: "Do you offer onboarding help?", a: "Yes. Every new account gets free onboarding guidance from our team — just mention it in your message." },
   { q: "Can I migrate from another tool?", a: "We support CSV imports from most accounting platforms and can help map categories during onboarding." },
-  { q: "Is Zentriq right for my business?", a: "Zentriq is built for small businesses, agencies, retail, and online operators. Tell us about yours and we'll be honest." },
+  { q: "Is Ryport right for my business?", a: "Ryport is built for small businesses, agencies, retail, and online operators. Tell us about yours and we'll be honest." },
 ];
 
 function ContactPage() {
@@ -58,7 +58,7 @@ function ContactPage() {
     <MarketingShell>
       <PageHero
         eyebrow="We'd love to hear from you"
-        title="Talk to the Zentriq team."
+        title="Talk to the Ryport team."
         subtitle="Sales, support, partnerships, or just a thoughtful question — drop us a line and a real person will reply."
       />
 
@@ -72,7 +72,7 @@ function ContactPage() {
                   <Check className="h-7 w-7" />
                 </div>
                 <h2 className="mt-6 text-2xl font-semibold tracking-tight">Message received.</h2>
-                <p className="mt-2 text-muted-foreground max-w-md mx-auto">Thanks for reaching out. A member of the Zentriq team will get back to you within one business day.</p>
+                <p className="mt-2 text-muted-foreground max-w-md mx-auto">Thanks for reaching out. A member of the Ryport team will get back to you within one business day.</p>
                 <Button variant="outline" className="mt-8 rounded-full" onClick={() => { setForm({ name: "", email: "", company: "", message: "" }); setState("idle"); }}>Send another message</Button>
               </div>
             ) : (
@@ -112,13 +112,13 @@ function ContactPage() {
               <Mail className="h-5 w-5 text-primary" />
               <div className="mt-3 text-sm font-semibold">Email support</div>
               <p className="mt-1 text-sm text-muted-foreground">For any product, billing, or account question.</p>
-              <a href="mailto:hello@zentriq.com" className="mt-3 inline-block text-sm font-medium underline">hello@zentriq.com</a>
+              <a href="mailto:hello@ryport.com" className="mt-3 inline-block text-sm font-medium underline">hello@ryport.com</a>
             </div>
             <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
               <MessageSquare className="h-5 w-5 text-primary" />
               <div className="mt-3 text-sm font-semibold">Sales & partnerships</div>
               <p className="mt-1 text-sm text-muted-foreground">Talk to our team about scaled deployments or partnerships.</p>
-              <a href="mailto:sales@zentriq.com" className="mt-3 inline-block text-sm font-medium underline">sales@zentriq.com</a>
+              <a href="mailto:sales@ryport.com" className="mt-3 inline-block text-sm font-medium underline">sales@ryport.com</a>
             </div>
             <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
               <Clock className="h-5 w-5 text-primary" />

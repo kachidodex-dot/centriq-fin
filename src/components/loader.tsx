@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import { useEffect, useState } from "react";
-import logo from "@/assets/zentriq-logo.jpeg";
+import logo from "@/assets/ryport-logo";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -83,7 +83,7 @@ export function Loader({ visible: visibleProp }: { visible?: boolean } = {}) {
                   initial="hidden"
                   animate="visible"
                 >
-                  <img src={logo} alt="Zentriq" className="h-16 w-16 rounded-3xl object-contain" />
+                  <img src={logo} alt="Ryport" className="h-16 w-16 rounded-3xl object-contain" />
                 </motion.div>
                 <motion.div
                   className="absolute inset-0 rounded-full border border-white/10"
@@ -92,7 +92,7 @@ export function Loader({ visible: visibleProp }: { visible?: boolean } = {}) {
                 />
               </motion.div>
               <div className="relative z-10 text-center">
-                <p className="text-sm uppercase tracking-[0.35em] text-slate-400">Loading Zentriq</p>
+                <p className="text-sm uppercase tracking-[0.35em] text-slate-400">Loading Ryport</p>
                 <p className="mt-2 text-3xl font-semibold tracking-tight text-white">Preparing your financial dashboard</p>
               </div>
               <div className="flex items-center justify-center gap-3">
