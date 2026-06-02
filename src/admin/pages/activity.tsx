@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 
-const activityCategories = ["All", "Transactions", "Users"];
+const activityCategories = ["All", "Transactions", "Signups"];
 
 function formatRelative(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
@@ -35,7 +35,7 @@ export function AdminActivityPage() {
       const [{ data: txs }, { data: profiles }] = await Promise.all([
         supabase
           .from("transactions")
-          .select("id, amount, type, category, occurred_at, created_at, user_id")
+          .select("id, amount, type, category, date, created_at, user_id")
           .order("created_at", { ascending: false })
           .limit(50),
         supabase
@@ -52,14 +52,14 @@ export function AdminActivityPage() {
   const allActivity = useMemo<ActivityItem[]>(() => {
     const txItems: ActivityItem[] = (data?.txs ?? []).map((t) => ({
       id: `tx-${t.id}`,
-      type: "Transactions",
-      user: t.business_name ?? "User",
+      type: "transaction",
+      user: "User",
       description: `${t.type === "income" ? "Recorded income" : "Recorded expense"} · ${t.category ?? "Uncategorized"} · $${Number(t.amount).toLocaleString()}`,
-      timestamp: formatRelative(t.created_at ?? t.occurred_at),
+      timestamp: formatRelative(t.created_at ?? t.date),
     }));
     const userItems: ActivityItem[] = (data?.profiles ?? []).map((p) => ({
       id: `user-${p.id}`,
-      type: "Users",
+      type: "signup",
       user: p.business_name ?? "New user",
       description: "Joined Ryport",
       timestamp: formatRelative(p.created_at),
@@ -72,14 +72,16 @@ export function AdminActivityPage() {
   const displayActivity =
     selectedCategory === "All"
       ? allActivity
-      : allActivity.filter((a) => a.type === selectedCategory);
+      : allActivity.filter((a) =>
+          selectedCategory === "Transactions" ? a.type === "transaction" : a.type === "signup",
+        );
 
   const todayCount = displayActivity.length;
   const newSignups = (data?.profiles ?? []).filter(
     (p) => Date.now() - new Date(p.created_at).getTime() < 86400000,
   ).length;
   const txCount = (data?.txs ?? []).filter(
-    (t) => Date.now() - new Date(t.created_at ?? t.occurred_at).getTime() < 86400000,
+    (t) => Date.now() - new Date(t.created_at ?? t.date).getTime() < 86400000,
   ).length;
 
   return (
