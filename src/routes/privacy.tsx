@@ -4,10 +4,10 @@ import { MarketingShell, LegalLayout } from "@/components/marketing/marketing-sh
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — Zentriq" },
-      { name: "description", content: "How Zentriq collects, uses, and protects your information." },
-      { property: "og:title", content: "Privacy Policy — Zentriq" },
-      { property: "og:description", content: "How Zentriq collects, uses, and protects your information." },
+      { title: "Privacy Policy — Ryport" },
+      { name: "description", content: "How Ryport collects, uses, and protects your information." },
+      { property: "og:title", content: "Privacy Policy — Ryport" },
+      { property: "og:description", content: "How Ryport collects, uses, and protects your information." },
     ],
   }),
   component: PrivacyPage,
@@ -18,8 +18,8 @@ function PrivacyPage() {
     <MarketingShell>
       <LegalLayout title="Privacy Policy" updated="May 20, 2026">
         <p>
-          Zentriq ("we", "us", "our") provides AI-powered financial tools for small businesses. This Privacy Policy explains
-          what information we collect, how we use it, and the choices you have. We designed Zentriq to collect as little data
+          Ryport ("we", "us", "our") provides AI-powered financial tools for small businesses. This Privacy Policy explains
+          what information we collect, how we use it, and the choices you have. We designed Ryport to collect as little data
           as possible while still delivering an excellent product.
         </p>
 
@@ -27,13 +27,13 @@ function PrivacyPage() {
         <p>We collect three categories of information:</p>
         <ul>
           <li><strong>Account information</strong> — name, email address, business name, and authentication credentials.</li>
-          <li><strong>Financial information</strong> — transactions, categories, and notes you add or import into Zentriq.</li>
-          <li><strong>Product usage</strong> — basic, aggregated analytics about how you use Zentriq, used only to improve the product.</li>
+          <li><strong>Financial information</strong> — transactions, categories, and notes you add or import into Ryport.</li>
+          <li><strong>Product usage</strong> — basic, aggregated analytics about how you use Ryport, used only to improve the product.</li>
         </ul>
 
         <h2>2. How we use your data</h2>
         <ul>
-          <li>To operate, secure, and improve Zentriq.</li>
+          <li>To operate, secure, and improve Ryport.</li>
           <li>To generate AI-powered insights, summaries, and recommendations.</li>
           <li>To communicate important account, security, and product updates.</li>
           <li>To comply with legal and regulatory obligations.</li>
@@ -62,13 +62,13 @@ function PrivacyPage() {
         <p>We use a limited set of vetted infrastructure providers (hosting, authentication, AI inference, analytics). Each provider is bound by a Data Processing Agreement and contractually required to protect your data.</p>
 
         <h2>8. International transfers</h2>
-        <p>Zentriq operates globally. Where data is transferred internationally, we rely on appropriate safeguards such as Standard Contractual Clauses.</p>
+        <p>Ryport operates globally. Where data is transferred internationally, we rely on appropriate safeguards such as Standard Contractual Clauses.</p>
 
         <h2>9. Changes to this policy</h2>
         <p>We may update this policy from time to time. Material changes will be communicated by email or in-app notice at least 14 days before they take effect.</p>
 
         <h2>10. Contact</h2>
-        <p>For privacy questions or data requests, contact us at <a href="mailto:privacy@zentriq.com">privacy@zentriq.com</a>.</p>
+        <p>For privacy questions or data requests, contact us at <a href="mailto:privacy@ryport.com">privacy@ryport.com</a>.</p>
       </LegalLayout>
     </MarketingShell>
   );

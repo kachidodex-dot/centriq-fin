@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { AdminLayout } from "@/admin/components/admin-layout";
 import { DashboardSection } from "@/admin/components/dashboard-sections";
-import { ActivityFeed } from "@/admin/components/activity-feed";
+import { ActivityFeed, type ActivityItem } from "@/admin/components/activity-feed";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -10,44 +11,100 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { mockActivity } from "@/admin/lib/mock-data";
+import { supabase } from "@/integrations/supabase/client";
 
-const activityCategories = [
-  "All",
-  "User Activity",
-  "Admin Actions",
-  "Transactions",
-  "System",
-];
+const activityCategories = ["All", "Transactions", "Signups"];
+
+function formatRelative(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return "just now";
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  return `${d}d ago`;
+}
 
 export function AdminActivityPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  // In a real app, filter by category
-  const displayActivity = mockActivity;
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-activity"],
+    queryFn: async () => {
+      const [{ data: txs }, { data: profiles }] = await Promise.all([
+        supabase
+          .from("transactions")
+          .select("id, amount, type, category, date, created_at, user_id")
+          .order("created_at", { ascending: false })
+          .limit(50),
+        supabase
+          .from("profiles")
+          .select("id, business_name, created_at")
+          .order("created_at", { ascending: false })
+          .limit(50),
+      ]);
+      return { txs: txs ?? [], profiles: profiles ?? [] };
+    },
+    refetchInterval: 30000,
+  });
+
+  const allActivity = useMemo<ActivityItem[]>(() => {
+    const txItems: ActivityItem[] = (data?.txs ?? []).map((t) => ({
+      id: `tx-${t.id}`,
+      type: "transaction",
+      user: "User",
+      description: `${t.type === "income" ? "Recorded income" : "Recorded expense"} · ${t.category ?? "Uncategorized"} · $${Number(t.amount).toLocaleString()}`,
+      timestamp: formatRelative(t.created_at ?? t.date),
+    }));
+    const userItems: ActivityItem[] = (data?.profiles ?? []).map((p) => ({
+      id: `user-${p.id}`,
+      type: "signup",
+      user: p.business_name ?? "New user",
+      description: "Joined Ryport",
+      timestamp: formatRelative(p.created_at),
+    }));
+    return [...txItems, ...userItems].sort((a, b) =>
+      a.timestamp.localeCompare(b.timestamp),
+    );
+  }, [data]);
+
+  const displayActivity =
+    selectedCategory === "All"
+      ? allActivity
+      : allActivity.filter((a) =>
+          selectedCategory === "Transactions" ? a.type === "transaction" : a.type === "signup",
+        );
+
+  const todayCount = displayActivity.length;
+  const newSignups = (data?.profiles ?? []).filter(
+    (p) => Date.now() - new Date(p.created_at).getTime() < 86400000,
+  ).length;
+  const txCount = (data?.txs ?? []).filter(
+    (t) => Date.now() - new Date(t.created_at ?? t.date).getTime() < 86400000,
+  ).length;
 
   return (
     <AdminLayout
       title="Activity Logs"
       subtitle="Monitor all platform activities and system events"
     >
-      {/* Activity Stats */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4 mb-6">
         <div className="rounded-lg border border-gray-200 bg-white p-4">
           <p className="text-sm text-gray-600">Today's Activities</p>
-          <p className="mt-1 text-2xl font-bold text-gray-900">247</p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{isLoading ? "—" : todayCount}</p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-4">
           <p className="text-sm text-gray-600">New Signups</p>
-          <p className="mt-1 text-2xl font-bold text-blue-600">42</p>
+          <p className="mt-1 text-2xl font-bold text-blue-600">{isLoading ? "—" : newSignups}</p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-4">
           <p className="text-sm text-gray-600">Transactions</p>
-          <p className="mt-1 text-2xl font-bold text-green-600">156</p>
+          <p className="mt-1 text-2xl font-bold text-green-600">{isLoading ? "—" : txCount}</p>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-4">
           <p className="text-sm text-gray-600">System Events</p>
-          <p className="mt-1 text-2xl font-bold text-purple-600">12</p>
+          <p className="mt-1 text-2xl font-bold text-purple-600">0</p>
         </div>
       </div>
 
@@ -70,7 +127,13 @@ export function AdminActivityPage() {
         }
       >
         <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <ActivityFeed items={displayActivity} />
+          {isLoading ? (
+            <p className="text-sm text-gray-500">Loading activity…</p>
+          ) : displayActivity.length === 0 ? (
+            <p className="text-sm text-gray-500">No activity recorded yet.</p>
+          ) : (
+            <ActivityFeed items={displayActivity} />
+          )}
         </div>
       </DashboardSection>
 

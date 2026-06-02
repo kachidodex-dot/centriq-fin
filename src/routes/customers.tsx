@@ -6,10 +6,10 @@ import { MarketingShell, PageHero } from "@/components/marketing/marketing-shell
 export const Route = createFileRoute("/customers")({
   head: () => ({
     meta: [
-      { title: "Customers — Zentriq" },
-      { name: "description", content: "How modern businesses use Zentriq to understand cashflow, plan growth, and operate with confidence." },
-      { property: "og:title", content: "Customers — Zentriq" },
-      { property: "og:description", content: "Real businesses, real results. See how Zentriq powers modern finance teams." },
+      { title: "Customers — Ryport" },
+      { name: "description", content: "How modern businesses use Ryport to understand cashflow, plan growth, and operate with confidence." },
+      { property: "og:title", content: "Customers — Ryport" },
+      { property: "og:description", content: "Real businesses, real results. See how Ryport powers modern finance teams." },
     ],
   }),
   component: CustomersPage,
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/customers")({
 const logos = ["Northwind", "Lumen Studio", "Atlas Goods", "Parallel", "Hearth & Co.", "Modular Labs", "Quiet Capital", "Bloom Health"];
 
 const stats = [
-  { value: "1,200+", label: "Businesses on Zentriq" },
+  { value: "1,200+", label: "Businesses on Ryport" },
   { value: "$840M", label: "Tracked annually" },
   { value: "37%", label: "Avg. time saved on finance ops" },
   { value: "4.9 / 5", label: "Customer rating" },
@@ -29,7 +29,7 @@ const stories = [
     company: "Northwind Coffee Roasters",
     industry: "Specialty retail · 14 locations",
     growth: "+42% revenue · 12 months",
-    quote: "Zentriq replaced three spreadsheets and a weekly meeting. We finally know our margins per location, in real time.",
+    quote: "Ryport replaced three spreadsheets and a weekly meeting. We finally know our margins per location, in real time.",
     person: "Mara Chen, Co-founder",
   },
   {
@@ -43,7 +43,7 @@ const stories = [
     company: "Atlas Goods",
     industry: "DTC commerce · $6M ARR",
     growth: "2.1× cash runway",
-    quote: "Forecasting used to take a full day. Now I open Zentriq, scan the dashboard, and ship the rest of my Monday.",
+    quote: "Forecasting used to take a full day. Now I open Ryport, scan the dashboard, and ship the rest of my Monday.",
     person: "Priya Shah, Founder",
   },
 ];
@@ -61,7 +61,7 @@ function CustomersPage() {
       <PageHero
         eyebrow="Trusted by modern businesses"
         title="The operating system behind 1,200+ growing companies."
-        subtitle="From boutique studios to multi-location retailers, founders use Zentriq to see their numbers clearly and make better decisions, faster."
+        subtitle="From boutique studios to multi-location retailers, founders use Ryport to see their numbers clearly and make better decisions, faster."
       />
 
       {/* Logos */}
@@ -138,7 +138,7 @@ function CustomersPage() {
       {/* CTA */}
       <section className="mx-auto max-w-4xl px-6 py-24 text-center">
         <Sparkles className="mx-auto h-6 w-6 text-primary" />
-        <h2 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight">Join the businesses growing on Zentriq.</h2>
+        <h2 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight">Join the businesses growing on Ryport.</h2>
         <p className="mt-4 text-muted-foreground max-w-xl mx-auto">Free to start. No credit card. Set up in under a minute.</p>
         <Link to="/signup"><Button size="lg" className="mt-8 rounded-full px-7 gap-2">Get started free <ArrowRight className="h-4 w-4" /></Button></Link>
       </section>

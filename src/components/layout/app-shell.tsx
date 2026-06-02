@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useState, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/zentriq-logo.jpeg";
+import logo from "@/assets/ryport-logo";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -24,8 +24,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const SidebarInner = (
     <>
       <Link to="/" className="flex items-center gap-2.5 px-2 py-1 group">
-        <img src={logo} alt="Zentriq" className="h-9 w-9 rounded-full object-contain shadow-glow transition-transform duration-500 group-hover:rotate-[8deg] group-hover:scale-110" />
-        <span className="font-semibold text-lg tracking-tight">Zentriq</span>
+        <img src={logo} alt="Ryport" className="h-9 w-9 rounded-full object-contain shadow-glow transition-transform duration-500 group-hover:rotate-[8deg] group-hover:scale-110" />
+        <span className="font-semibold text-lg tracking-tight">Ryport</span>
       </Link>
       <nav className="mt-8 space-y-1">
         {nav.map((item) => {
@@ -67,7 +67,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </div>
       {/* Mobile top bar */}
       <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/60 backdrop-blur-xl px-4 py-3">
-        <Link to="/" className="flex items-center gap-2"><img src={logo} alt="Zentriq" className="h-7 w-7 rounded-full object-contain" /><span className="font-semibold text-sm">Zentriq</span></Link>
+        <Link to="/" className="flex items-center gap-2"><img src={logo} alt="Ryport" className="h-7 w-7 rounded-full object-contain" /><span className="font-semibold text-sm">Ryport</span></Link>
         <Button variant="ghost" size="icon" onClick={() => setOpen(!open)}>{open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</Button>
       </div>
 

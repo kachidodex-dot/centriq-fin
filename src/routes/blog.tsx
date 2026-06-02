@@ -7,9 +7,9 @@ import { MarketingShell, PageHero } from "@/components/marketing/marketing-shell
 export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
-      { title: "Blog — Zentriq" },
+      { title: "Blog — Ryport" },
       { name: "description", content: "Insights on AI, cashflow, and modern finance for founders and operators." },
-      { property: "og:title", content: "Blog — Zentriq" },
+      { property: "og:title", content: "Blog — Ryport" },
       { property: "og:description", content: "Insights on AI, cashflow, and modern finance for founders and operators." },
     ],
   }),
@@ -22,7 +22,7 @@ const featured = {
   category: "AI",
   title: "Improving cashflow with AI: a practical guide for founders",
   excerpt: "How modern AI models surface revenue patterns, expense leaks, and runway risk before they hit your bank account.",
-  author: "The Zentriq Team",
+  author: "The Ryport Team",
   date: "May 12, 2026",
   readTime: "8 min read",
 };
@@ -40,9 +40,9 @@ function BlogPage() {
   return (
     <MarketingShell>
       <PageHero
-        eyebrow="Zentriq Journal"
+        eyebrow="Ryport Journal"
         title="Ideas for building a financially intelligent business."
-        subtitle="Tactical writing on cashflow, AI, and modern finance — from the team building Zentriq and the operators using it."
+        subtitle="Tactical writing on cashflow, AI, and modern finance — from the team building Ryport and the operators using it."
       />
 
       {/* Categories */}
@@ -108,7 +108,7 @@ function BlogPage() {
         <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-10 sm:p-14 text-center shadow-soft">
           <div className="absolute inset-0 gradient-hero pointer-events-none opacity-60" />
           <div className="relative">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Get the Zentriq newsletter</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Get the Ryport newsletter</h2>
             <p className="mt-3 text-muted-foreground max-w-xl mx-auto">One thoughtful email a month on cashflow, AI, and the financial habits behind durable companies.</p>
             <form className="mt-8 flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
               <Input type="email" placeholder="you@company.com" className="h-11 rounded-full px-5" />

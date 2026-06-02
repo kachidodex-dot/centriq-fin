@@ -3,7 +3,7 @@ import { Outlet, Link, createRootRouteWithContext, useRouter, HeadContent, Scrip
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import appCss from "../styles.css?url";
-import logo from "@/assets/zentriq-logo.jpeg";
+import logo from "@/assets/ryport-logo";
 import { AuthProvider } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/sonner";
 import { Loader as InitialLoader } from "@/components/loader";
@@ -40,10 +40,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Zentriq — AI-powered financial intelligence" },
+      { title: "Ryport — AI-powered financial intelligence" },
       { name: "description", content: "Modern AI-powered financial operating system for small businesses." },
-      { property: "og:title", content: "Zentriq — AI-powered financial intelligence" },
-      { name: "twitter:title", content: "Zentriq — AI-powered financial intelligence" },
+      { property: "og:title", content: "Ryport — AI-powered financial intelligence" },
+      { name: "twitter:title", content: "Ryport — AI-powered financial intelligence" },
       { property: "og:description", content: "Modern AI-powered financial operating system for small businesses." },
       { name: "twitter:description", content: "Modern AI-powered financial operating system for small businesses." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a4c75716-99eb-4052-84e8-9070039f7b23/id-preview-502ece63--169ef662-3fe0-4a96-b91c-949604628734.lovable.app-1778529343273.png" },

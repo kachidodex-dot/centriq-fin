@@ -63,7 +63,7 @@ export function AdminLoginPage() {
             </div>
             <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
             <p className="mt-2 text-sm text-purple-200">
-              Access Zentriq admin dashboard
+              Access Ryport admin dashboard
             </p>
           </div>
 
@@ -78,7 +78,7 @@ export function AdminLoginPage() {
                 <Mail className="absolute left-3 top-3 h-5 w-5 text-purple-400" />
                 <Input
                   type="email"
-                  placeholder="admin@zentriq.com"
+                  placeholder="admin@ryport.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10 h-11 bg-white/10 border-purple-400/30 text-white placeholder:text-purple-300"
@@ -147,8 +147,8 @@ export function AdminLoginPage() {
           {/* Footer */}
           <p className="mt-6 text-center text-sm text-purple-200">
             Questions? Contact{" "}
-            <a href="mailto:support@zentriq.com" className="text-purple-300 hover:text-purple-100 font-medium">
-              support@zentriq.com
+            <a href="mailto:support@ryport.com" className="text-purple-300 hover:text-purple-100 font-medium">
+              support@ryport.com
             </a>
           </p>
         </div>

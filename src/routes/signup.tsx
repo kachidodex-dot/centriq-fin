@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/signup")({
-  head: () => ({ meta: [{ title: "Create account — Zentriq" }] }),
+  head: () => ({ meta: [{ title: "Create account — Ryport" }] }),
   component: SignupPage,
 });
 
@@ -32,7 +32,7 @@ function SignupPage() {
     const { error } = await signUp(email, password, businessName || "My Business");
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Account created — welcome to Zentriq");
+    toast.success("Account created — welcome to Ryport");
     navigate({ to: isAdmin ? "/admin" : "/dashboard" });
   };
 
@@ -40,14 +40,14 @@ function SignupPage() {
     <div className="min-h-screen grid lg:grid-cols-2">
       <div className="hidden lg:flex relative items-center justify-center gradient-primary p-12 overflow-hidden">
         <div className="relative z-10 max-w-md text-primary-foreground">
-          <Link to="/" className="flex items-center gap-2 font-semibold"><div className="grid h-8 w-8 place-items-center rounded-lg bg-primary-foreground/15 backdrop-blur">Z</div> Zentriq</Link>
+          <Link to="/" className="flex items-center gap-2 font-semibold"><div className="grid h-8 w-8 place-items-center rounded-lg bg-primary-foreground/15 backdrop-blur">Z</div> Ryport</Link>
           <h2 className="mt-12 text-4xl font-bold leading-tight">Start running your business with clarity.</h2>
           <p className="mt-4 text-primary-foreground/80">Free to start. Set up in under a minute.</p>
         </div>
       </div>
       <div className="flex items-center justify-center p-6 sm:p-10">
         <div className="w-full max-w-md">
-          <Link to="/" className="lg:hidden flex items-center gap-2 font-semibold mb-8"><div className="grid h-8 w-8 place-items-center rounded-lg gradient-primary text-primary-foreground">Z</div> Zentriq</Link>
+          <Link to="/" className="lg:hidden flex items-center gap-2 font-semibold mb-8"><div className="grid h-8 w-8 place-items-center rounded-lg gradient-primary text-primary-foreground">Z</div> Ryport</Link>
           <h1 className="text-2xl font-bold tracking-tight">Create your account</h1>
           <p className="mt-1 text-sm text-muted-foreground">Get AI-powered financial insights in seconds.</p>
           <form onSubmit={onSubmit} className="mt-8 space-y-4">

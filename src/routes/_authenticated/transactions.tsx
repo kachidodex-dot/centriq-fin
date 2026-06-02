@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/transactions")({
-  head: () => ({ meta: [{ title: "Transactions — Zentriq" }] }),
+  head: () => ({ meta: [{ title: "Transactions — Ryport" }] }),
   component: TransactionsPage,
 });
 

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/admin-dashboard")({
-  head: () => ({ meta: [{ title: "Admin Dashboard — Zentriq" }] }),
+  head: () => ({ meta: [{ title: "Admin Dashboard — Ryport" }] }),
   component: AdminDashboardRedirect,
 });
 

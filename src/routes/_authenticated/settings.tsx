@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/settings")({
-  head: () => ({ meta: [{ title: "Settings — Zentriq" }] }),
+  head: () => ({ meta: [{ title: "Settings — Ryport" }] }),
   component: SettingsPage,
 });
 
