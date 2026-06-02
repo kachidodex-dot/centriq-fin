@@ -1,42 +1,51 @@
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import logo from "@/assets/zentriq-logo.jpeg";
 
-const ringVariant = {
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const ringVariant: Variants = {
   hidden: { opacity: 0, scale: 0.68 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.9, ease: EASE },
   },
 };
 
-const logoVariant = {
+const logoVariant: Variants = {
   hidden: { opacity: 0, y: 20, scale: 0.9 },
   visible: {
     opacity: 1,
     y: 0,
     scale: [1, 1.02, 1],
-    transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1], repeat: Infinity, repeatType: "mirror" },
+    transition: { duration: 1.8, ease: EASE, repeat: Infinity, repeatType: "mirror" as const },
   },
 };
 
-const dotVariant = {
+const dotVariant: Variants = {
   hidden: { opacity: 0.2, y: 0 },
   visible: (index: number) => ({
     opacity: [0.2, 1, 0.2],
     y: [0, -10, 0],
     transition: {
       duration: 1.4,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
       repeat: Infinity,
       delay: index * 0.15,
     },
   }),
 };
 
-export function Loader({ visible }: { visible: boolean }) {
+export function Loader({ visible: visibleProp }: { visible?: boolean } = {}) {
   const reduceMotion = useReducedMotion();
+  const [internalVisible, setInternalVisible] = useState(true);
+  useEffect(() => {
+    if (visibleProp !== undefined) return;
+    const t = setTimeout(() => setInternalVisible(false), 1400);
+    return () => clearTimeout(t);
+  }, [visibleProp]);
+  const visible = visibleProp ?? internalVisible;
 
   return (
     <AnimatePresence>
@@ -45,7 +54,7 @@ export function Loader({ visible }: { visible: boolean }) {
           className="fixed inset-0 z-[9999] grid place-items-center bg-slate-950/95 text-white"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }}
+          exit={{ opacity: 0, transition: { duration: 0.6, ease: EASE } }}
           transition={{ duration: 0.35 }}
         >
           <div className="relative flex min-h-[calc(100vh-2rem)] w-full max-w-4xl items-center justify-center px-6 py-10">
