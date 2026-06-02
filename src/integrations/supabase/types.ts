@@ -21,6 +21,7 @@ export type Database = {
           currency: string
           id: string
           notifications_enabled: boolean
+          role: Database["public"]["Enums"]["app_role"]
           theme: string
           updated_at: string
         }
@@ -30,6 +31,7 @@ export type Database = {
           currency?: string
           id: string
           notifications_enabled?: boolean
+          role?: Database["public"]["Enums"]["app_role"]
           theme?: string
           updated_at?: string
         }
@@ -39,6 +41,7 @@ export type Database = {
           currency?: string
           id?: string
           notifications_enabled?: boolean
+          role?: Database["public"]["Enums"]["app_role"]
           theme?: string
           updated_at?: string
         }

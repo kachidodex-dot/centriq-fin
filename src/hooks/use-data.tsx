@@ -21,7 +21,7 @@ export function useTransactions() {
   return { data, loading, refetch };
 }
 
-export type Profile = { id: string; business_name: string | null; currency: string; theme: string; notifications_enabled: boolean };
+export type Profile = { id: string; business_name: string | null; currency: string; theme: string; notifications_enabled: boolean; role: "admin" | "user" | null };
 
 export function useProfile() {
   const { user } = useAuth();

@@ -12,14 +12,18 @@ export const Route = createFileRoute("/signup")({
 });
 
 function SignupPage() {
-  const { signUp, user } = useAuth();
+  const { signUp, user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [businessName, setBusinessName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => { if (user) navigate({ to: "/dashboard" }); }, [user, navigate]);
+  useEffect(() => {
+    if (user) {
+      navigate({ to: isAdmin ? "/admin" : "/dashboard" });
+    }
+  }, [user, isAdmin, navigate]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +33,7 @@ function SignupPage() {
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success("Account created — welcome to Zentriq");
-    navigate({ to: "/dashboard" });
+    navigate({ to: isAdmin ? "/admin" : "/dashboard" });
   };
 
   return (

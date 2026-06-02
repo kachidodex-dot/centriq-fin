@@ -15,8 +15,10 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CustomersRouteImport } from './routes/customers'
 import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as ControlRoomRouteImport } from './routes/control-room'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AdminDashboardRouteImport } from './routes/admin-dashboard'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -62,6 +64,11 @@ const CookiesRoute = CookiesRouteImport.update({
   path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ControlRoomRoute = ControlRoomRouteImport.update({
+  id: '/control-room',
+  path: '/control-room',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -70,6 +77,11 @@ const ContactRoute = ContactRouteImport.update({
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/admin-dashboard',
+  path: '/admin-dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
@@ -145,8 +157,10 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin-dashboard': typeof AdminDashboardRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/control-room': typeof ControlRoomRoute
   '/cookies': typeof CookiesRoute
   '/customers': typeof CustomersRoute
   '/login': typeof LoginRoute
@@ -168,8 +182,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin-dashboard': typeof AdminDashboardRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/control-room': typeof ControlRoomRoute
   '/cookies': typeof CookiesRoute
   '/customers': typeof CustomersRoute
   '/login': typeof LoginRoute
@@ -193,8 +209,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/admin-dashboard': typeof AdminDashboardRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/control-room': typeof ControlRoomRoute
   '/cookies': typeof CookiesRoute
   '/customers': typeof CustomersRoute
   '/login': typeof LoginRoute
@@ -218,8 +236,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin-dashboard'
     | '/blog'
     | '/contact'
+    | '/control-room'
     | '/cookies'
     | '/customers'
     | '/login'
@@ -241,8 +261,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin-dashboard'
     | '/blog'
     | '/contact'
+    | '/control-room'
     | '/cookies'
     | '/customers'
     | '/login'
@@ -265,8 +287,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/admin-dashboard'
     | '/blog'
     | '/contact'
+    | '/control-room'
     | '/cookies'
     | '/customers'
     | '/login'
@@ -290,8 +314,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AdminDashboardRoute: typeof AdminDashboardRoute
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
+  ControlRoomRoute: typeof ControlRoomRoute
   CookiesRoute: typeof CookiesRoute
   CustomersRoute: typeof CustomersRoute
   LoginRoute: typeof LoginRoute
@@ -352,6 +378,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/control-room': {
+      id: '/control-room'
+      path: '/control-room'
+      fullPath: '/control-room'
+      preLoaderRoute: typeof ControlRoomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -364,6 +397,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog'
       preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin-dashboard': {
+      id: '/admin-dashboard'
+      path: '/admin-dashboard'
+      fullPath: '/admin-dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -488,8 +528,10 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AdminDashboardRoute: AdminDashboardRoute,
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
+  ControlRoomRoute: ControlRoomRoute,
   CookiesRoute: CookiesRoute,
   CustomersRoute: CustomersRoute,
   LoginRoute: LoginRoute,
@@ -508,3 +550,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

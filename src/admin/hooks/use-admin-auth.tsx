@@ -1,38 +1,30 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
 
 export function useAdminAuth(redirectOnFail = true) {
+  const { user, isAdmin, loading, signOut } = useAuth();
   const [checking, setChecking] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        if (mounted && redirectOnFail) navigate({ to: "/admin/login" });
-        if (mounted) setChecking(false);
-        return;
-      }
-      const { data, error } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "admin")
-        .maybeSingle();
-      const ok = !!data && !error;
-      if (!mounted) return;
-      setIsAdmin(ok);
-      setChecking(false);
-      if (!ok && redirectOnFail) {
-        await supabase.auth.signOut();
+    if (loading) return;
+
+    if (!user || !isAdmin) {
+      if (redirectOnFail) {
+        if (user) {
+          void signOut();
+        }
+        toast.error("Unauthorized Access");
         navigate({ to: "/admin/login" });
       }
-    })();
-    return () => { mounted = false; };
-  }, [navigate, redirectOnFail]);
+      setChecking(false);
+      return;
+    }
+
+    setChecking(false);
+  }, [user, isAdmin, loading, navigate, redirectOnFail, signOut]);
 
   return { checking, isAdmin };
 }

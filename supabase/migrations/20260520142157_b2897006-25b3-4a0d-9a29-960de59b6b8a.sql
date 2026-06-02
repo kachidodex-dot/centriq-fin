@@ -15,6 +15,13 @@ CREATE TABLE IF NOT EXISTS public.user_roles (
 
 ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
 
+-- Profile role column
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS role public.app_role NOT NULL DEFAULT 'user';
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+-- Transaction security
+ALTER TABLE public.transactions ENABLE ROW LEVEL SECURITY;
+
 -- Security definer role check
 CREATE OR REPLACE FUNCTION public.has_role(_user_id UUID, _role public.app_role)
 RETURNS BOOLEAN
@@ -23,7 +30,7 @@ AS $$
   SELECT EXISTS (SELECT 1 FROM public.user_roles WHERE user_id = _user_id AND role = _role)
 $$;
 
--- Policies
+-- Policies for user_roles
 DROP POLICY IF EXISTS "Users view own roles" ON public.user_roles;
 CREATE POLICY "Users view own roles" ON public.user_roles FOR SELECT
   USING (auth.uid() = user_id);
@@ -36,6 +43,23 @@ DROP POLICY IF EXISTS "Admins manage roles" ON public.user_roles;
 CREATE POLICY "Admins manage roles" ON public.user_roles FOR ALL
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
+
+-- Policies for profiles
+DROP POLICY IF EXISTS "Users manage own profile" ON public.profiles;
+CREATE POLICY "Users manage own profile" ON public.profiles FOR ALL
+  USING (auth.uid() = id OR public.has_role(auth.uid(), 'admin'))
+  WITH CHECK (auth.uid() = id OR public.has_role(auth.uid(), 'admin'));
+
+DROP POLICY IF EXISTS "Admins manage profiles" ON public.profiles;
+CREATE POLICY "Admins manage profiles" ON public.profiles FOR ALL
+  USING (public.has_role(auth.uid(), 'admin'))
+  WITH CHECK (public.has_role(auth.uid(), 'admin'));
+
+-- Policies for transactions
+DROP POLICY IF EXISTS "Users manage own transactions" ON public.transactions;
+CREATE POLICY "Users manage own transactions" ON public.transactions FOR ALL
+  USING (auth.uid() = user_id OR public.has_role(auth.uid(), 'admin'))
+  WITH CHECK (auth.uid() = user_id OR public.has_role(auth.uid(), 'admin'));
 
 -- Auto-grant admin role on signup for designated email
 CREATE OR REPLACE FUNCTION public.assign_admin_on_signup()
@@ -59,3 +83,8 @@ FOR EACH ROW EXECUTE FUNCTION public.assign_admin_on_signup();
 INSERT INTO public.user_roles (user_id, role)
 SELECT id, 'admin'::public.app_role FROM auth.users WHERE email = 'dowellobilor5@gmail.com'
 ON CONFLICT DO NOTHING;
+
+-- Backfill admin profile role when profile already exists
+UPDATE public.profiles
+SET role = 'admin'
+WHERE id IN (SELECT id FROM auth.users WHERE email = 'dowellobilor5@gmail.com');
