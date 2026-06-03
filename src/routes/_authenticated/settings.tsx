@@ -9,6 +9,7 @@ import { useProfile } from "@/hooks/use-data";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { EmailIntegrations } from "@/components/settings/email-integrations";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({ meta: [{ title: "Settings — Ryport" }] }),
@@ -62,6 +63,8 @@ function SettingsPage() {
         <div className="space-y-2"><Label>Email</Label><Input value={user?.email || ""} disabled /></div>
         <div className="space-y-2"><Label>Business name</Label><Input value={businessName} onChange={(e) => setBusinessName(e.target.value)} placeholder="Acme Co." /></div>
       </section>
+
+      <EmailIntegrations />
 
       <section className="rounded-2xl border border-border bg-card p-6 shadow-soft space-y-4">
         <h2 className="font-semibold">Preferences</h2>
