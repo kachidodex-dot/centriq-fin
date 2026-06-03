@@ -14,6 +14,152 @@ export type Database = {
   }
   public: {
     Tables: {
+      email_accounts: {
+        Row: {
+          access_token_enc: string | null
+          created_at: string
+          email: string
+          id: string
+          last_error: string | null
+          last_history_id: string | null
+          last_synced_at: string | null
+          provider: string
+          refresh_token_enc: string | null
+          scopes: string | null
+          status: Database["public"]["Enums"]["email_account_status"]
+          token_expires_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token_enc?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          last_error?: string | null
+          last_history_id?: string | null
+          last_synced_at?: string | null
+          provider?: string
+          refresh_token_enc?: string | null
+          scopes?: string | null
+          status?: Database["public"]["Enums"]["email_account_status"]
+          token_expires_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token_enc?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          last_error?: string | null
+          last_history_id?: string | null
+          last_synced_at?: string | null
+          provider?: string
+          refresh_token_enc?: string | null
+          scopes?: string | null
+          status?: Database["public"]["Enums"]["email_account_status"]
+          token_expires_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      email_imported_messages: {
+        Row: {
+          account_id: string
+          created_at: string
+          gmail_message_id: string
+          id: string
+          parsed_status: string
+          parser_name: string | null
+          transaction_id: string | null
+          user_id: string
+        }
+        Insert: {
+          account_id: string
+          created_at?: string
+          gmail_message_id: string
+          id?: string
+          parsed_status?: string
+          parser_name?: string | null
+          transaction_id?: string | null
+          user_id: string
+        }
+        Update: {
+          account_id?: string
+          created_at?: string
+          gmail_message_id?: string
+          id?: string
+          parsed_status?: string
+          parser_name?: string | null
+          transaction_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_imported_messages_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "email_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_imported_messages_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_sync_jobs: {
+        Row: {
+          account_id: string
+          created_at: string
+          error: string | null
+          finished_at: string | null
+          id: string
+          imported_count: number
+          processed_count: number
+          started_at: string | null
+          status: Database["public"]["Enums"]["email_sync_status"]
+          user_id: string
+        }
+        Insert: {
+          account_id: string
+          created_at?: string
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          imported_count?: number
+          processed_count?: number
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["email_sync_status"]
+          user_id: string
+        }
+        Update: {
+          account_id?: string
+          created_at?: string
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          imported_count?: number
+          processed_count?: number
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["email_sync_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_sync_jobs_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "email_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           business_name: string | null
@@ -48,10 +194,19 @@ export type Database = {
         Row: {
           amount: number
           category: Database["public"]["Enums"]["transaction_category"]
+          confidence: number | null
           created_at: string
+          currency: string | null
           date: string
+          email_account_id: string | null
+          email_message_id: string | null
           id: string
+          imported_at: string | null
+          merchant: string | null
+          needs_review: boolean
           note: string | null
+          reference: string | null
+          source: Database["public"]["Enums"]["transaction_source"]
           type: Database["public"]["Enums"]["transaction_type"]
           updated_at: string
           user_id: string
@@ -59,10 +214,19 @@ export type Database = {
         Insert: {
           amount: number
           category?: Database["public"]["Enums"]["transaction_category"]
+          confidence?: number | null
           created_at?: string
+          currency?: string | null
           date?: string
+          email_account_id?: string | null
+          email_message_id?: string | null
           id?: string
+          imported_at?: string | null
+          merchant?: string | null
+          needs_review?: boolean
           note?: string | null
+          reference?: string | null
+          source?: Database["public"]["Enums"]["transaction_source"]
           type: Database["public"]["Enums"]["transaction_type"]
           updated_at?: string
           user_id: string
@@ -70,11 +234,38 @@ export type Database = {
         Update: {
           amount?: number
           category?: Database["public"]["Enums"]["transaction_category"]
+          confidence?: number | null
           created_at?: string
+          currency?: string | null
           date?: string
+          email_account_id?: string | null
+          email_message_id?: string | null
           id?: string
+          imported_at?: string | null
+          merchant?: string | null
+          needs_review?: boolean
           note?: string | null
+          reference?: string | null
+          source?: Database["public"]["Enums"]["transaction_source"]
           type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_plans: {
+        Row: {
+          plan: Database["public"]["Enums"]["user_plan"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          plan?: Database["public"]["Enums"]["user_plan"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          plan?: Database["public"]["Enums"]["user_plan"]
           updated_at?: string
           user_id?: string
         }
@@ -116,6 +307,12 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      email_account_status:
+        | "connected"
+        | "disconnected"
+        | "error"
+        | "reauth_required"
+      email_sync_status: "queued" | "running" | "success" | "failed"
       transaction_category:
         | "inventory"
         | "food"
@@ -123,7 +320,13 @@ export type Database = {
         | "utilities"
         | "salary"
         | "miscellaneous"
+        | "marketing"
+        | "software"
+        | "subscription"
+        | "operations"
+      transaction_source: "manual" | "email"
       transaction_type: "income" | "expense"
+      user_plan: "free" | "pro" | "advanced"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -252,6 +455,13 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      email_account_status: [
+        "connected",
+        "disconnected",
+        "error",
+        "reauth_required",
+      ],
+      email_sync_status: ["queued", "running", "success", "failed"],
       transaction_category: [
         "inventory",
         "food",
@@ -259,8 +469,14 @@ export const Constants = {
         "utilities",
         "salary",
         "miscellaneous",
+        "marketing",
+        "software",
+        "subscription",
+        "operations",
       ],
+      transaction_source: ["manual", "email"],
       transaction_type: ["income", "expense"],
+      user_plan: ["free", "pro", "advanced"],
     },
   },
 } as const
