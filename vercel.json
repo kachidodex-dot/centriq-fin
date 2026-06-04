@@ -3,7 +3,6 @@
   "outputDirectory": ".output",
   "installCommand": "npm install",
   "framework": "vite",
-  "nodeVersion": "20.x",
   "functions": {
     "api/**": {
       "maxDuration": 60
