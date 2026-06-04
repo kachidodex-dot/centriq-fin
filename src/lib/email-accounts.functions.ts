@@ -265,8 +265,11 @@ export const triggerEmailSync = createServerFn({ method: "POST" })
         const validCategories = [
           "food", "transport", "utilities", "salary", "marketing",
           "software", "subscription", "inventory", "operations", "miscellaneous",
-        ];
-        const category = validCategories.includes(parsed.category) ? parsed.category : "miscellaneous";
+        ] as const;
+        type Cat = (typeof validCategories)[number];
+        const category: Cat = (validCategories as readonly string[]).includes(parsed.category)
+          ? (parsed.category as Cat)
+          : "miscellaneous";
 
         const { data: txn, error: txnErr } = await supabase
           .from("transactions")
