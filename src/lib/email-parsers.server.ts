@@ -130,6 +130,74 @@ function nigerianBank(e: RawEmail): ParsedEmail | null {
   };
 }
 
+// Specific Nigerian bank parser factory — bumps confidence for known senders.
+function bankAlertFactory(name: string, fromRegex: RegExp, confidence: number) {
+  return function (e: RawEmail): ParsedEmail | null {
+    if (!fromRegex.test(`${e.from} ${e.subject}`)) return null;
+    const text = `${e.subject}\n${e.body}`;
+    const debit = /\b(debit|withdraw|purchase|payment of|sent|transferred)\b/i.test(text);
+    const credit = /\b(credit|received|inflow|deposit|incoming)\b/i.test(text);
+    if (!debit && !credit) return null;
+    const amtMatch = text.match(new RegExp(`(?:NGN|₦|N)\\s?(${NUM})`, "i"));
+    const amount = num(amtMatch?.[1]);
+    if (!amount) return null;
+    const refMatch = text.match(/(?:ref(?:erence)?(?:\s*no)?|transaction id)[:\s]+([A-Za-z0-9_/-]{4,})/i);
+    const merchantMatch =
+      text.match(/(?:to|from|at|merchant|narration|description)[:\s]+([A-Z0-9][A-Za-z0-9 &.'/-]{2,60})/i) || null;
+    const merchant = merchantMatch?.[1]?.trim() ?? name;
+    return {
+      amount,
+      currency: "NGN",
+      type: debit ? "expense" : "income",
+      merchant,
+      reference: refMatch?.[1] ?? null,
+      date: dateFromInternal(e.internalDate),
+      category: guessCategory(merchant, e.subject, e.body),
+      confidence,
+      parserName: name.toLowerCase().replace(/\s+/g, "_"),
+    };
+  };
+}
+
+const accessBank = bankAlertFactory("Access Bank", /access\s*bank|@accessbank/i, 0.88);
+const opay = bankAlertFactory("Opay", /opay|@opaynigeria|@opayweb/i, 0.88);
+const moniepoint = bankAlertFactory("Moniepoint", /moniepoint|@moniepoint/i, 0.88);
+const palmpay = bankAlertFactory("PalmPay", /palmpay|@palmpay/i, 0.88);
+const kuda = bankAlertFactory("Kuda", /\bkuda\b|@kudabank/i, 0.88);
+const gtbankSpecific = bankAlertFactory("GTBank", /gtbank|gtco|@gtbank/i, 0.9);
+
+// Subscription / recurring billing emails (Netflix, Spotify, SaaS, etc.)
+function subscription(e: RawEmail): ParsedEmail | null {
+  const text = `${e.subject}\n${e.body}`;
+  const isSub =
+    /(subscription|renewed|renewal|auto-?renew|recurring|next billing|your plan)/i.test(text) ||
+    /(netflix|spotify|youtube premium|apple|disney|hbo|showmax|figma|notion|github|openai|anthropic|cursor|adobe|canva|slack|zoom|vercel|cloudflare)/i.test(
+      e.from,
+    );
+  if (!isSub) return null;
+  const amtMatch = text.match(new RegExp(`(?:USD|\\$|EUR|€|GBP|£|NGN|₦)\\s?(${NUM})`, "i"));
+  const amount = num(amtMatch?.[1]);
+  if (!amount) return null;
+  const sym = amtMatch?.[0] ?? "";
+  let currency = "USD";
+  if (/€|EUR/.test(sym)) currency = "EUR";
+  else if (/£|GBP/.test(sym)) currency = "GBP";
+  else if (/₦|NGN/.test(sym)) currency = "NGN";
+  const merchantMatch = e.from.match(/"?([^"<]+?)"?\s*</) || [null, e.from.split("@")[0]];
+  const merchant = merchantMatch[1]?.trim() ?? null;
+  return {
+    amount,
+    currency,
+    type: "expense",
+    merchant,
+    reference: null,
+    date: dateFromInternal(e.internalDate),
+    category: "subscription",
+    confidence: 0.8,
+    parserName: "subscription",
+  };
+}
+
 // Generic receipt / invoice
 function genericReceipt(e: RawEmail): ParsedEmail | null {
   const text = `${e.subject}\n${e.body}`;
@@ -157,7 +225,19 @@ function genericReceipt(e: RawEmail): ParsedEmail | null {
   };
 }
 
-const PARSERS = [paystack, flutterwave, nigerianBank, genericReceipt];
+const PARSERS = [
+  paystack,
+  flutterwave,
+  gtbankSpecific,
+  accessBank,
+  opay,
+  moniepoint,
+  palmpay,
+  kuda,
+  nigerianBank,
+  subscription,
+  genericReceipt,
+];
 
 export function parseEmail(e: RawEmail): ParsedEmail | null {
   for (const p of PARSERS) {
