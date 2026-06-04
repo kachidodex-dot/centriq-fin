@@ -178,6 +178,7 @@ export const triggerEmailSync = createServerFn({ method: "POST" })
     try {
       const { callAsAppUser } = await import("@/integrations/lovable/appUserConnector");
       const { parseEmail, extractBody } = await import("@/lib/email-parsers.server");
+      const { aiExtract } = await import("@/lib/email-ai-extractor.server");
 
       // Search last 90d for financial-looking emails
       const query = [
@@ -245,12 +246,17 @@ export const triggerEmailSync = createServerFn({ method: "POST" })
         const h = (n: string) =>
           headers.find((x) => x.name.toLowerCase() === n.toLowerCase())?.value || "";
         const body = extractBody(msg.payload);
-        const parsed = parseEmail({
+        const raw = {
           from: h("From"),
           subject: h("Subject"),
           body,
           internalDate: msg.internalDate || `${Date.now()}`,
-        });
+        };
+        let parsed = parseEmail(raw);
+        if (!parsed) {
+          // AI fallback when rule-based parsers don't match
+          parsed = await aiExtract(raw);
+        }
 
         if (!parsed) {
           await supabase.from("email_imported_messages").insert({
