@@ -9,8 +9,13 @@ import {
   disconnectEmailAccount,
   deleteEmailAccount,
   triggerEmailSync,
+  startGmailConnect,
+  completeGmailConnect,
   type EmailAccountSummary,
 } from "@/lib/email-accounts.functions";
+import { connectAppUser } from "@/integrations/lovable/appUserConnectorClient";
+
+const GATEWAY_BASE_URL = "https://connector-gateway.lovable.dev";
 
 function StatusBadge({ status }: { status: EmailAccountSummary["status"] }) {
   if (status === "connected")
@@ -51,6 +56,8 @@ export function EmailIntegrations() {
   const disconnectFn = useServerFn(disconnectEmailAccount);
   const deleteFn = useServerFn(deleteEmailAccount);
   const syncFn = useServerFn(triggerEmailSync);
+  const startFn = useServerFn(startGmailConnect);
+  const completeFn = useServerFn(completeGmailConnect);
 
   const { data, isLoading } = useQuery({
     queryKey: ["email_accounts"],
@@ -77,19 +84,42 @@ export function EmailIntegrations() {
 
   const sync = useMutation({
     mutationFn: (accountId: string) => syncFn({ data: { accountId } }),
-    onSuccess: () => {
-      toast.success("Sync queued");
+    onSuccess: (res: { processed?: number; imported?: number }) => {
+      const imported = res?.imported ?? 0;
+      const processed = res?.processed ?? 0;
+      toast.success(
+        imported > 0
+          ? `Imported ${imported} new transaction${imported === 1 ? "" : "s"}`
+          : processed > 0
+            ? "Sync complete · no new transactions"
+            : "Sync complete · nothing new",
+      );
+      qc.invalidateQueries({ queryKey: ["email_accounts"] });
+      qc.invalidateQueries({ queryKey: ["transactions"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const connect = useMutation({
+    mutationFn: async () => {
+      const result = await connectAppUser({
+        connectorId: "google_mail",
+        gatewayBaseUrl: GATEWAY_BASE_URL,
+        start: (targetOrigin) => startFn({ data: { targetOrigin } }),
+      });
+      if (!result.success || !result.connectionId) {
+        throw new Error(result.error || "Gmail connection failed");
+      }
+      return completeFn({ data: { connectionId: result.connectionId } });
+    },
+    onSuccess: (res: { email?: string }) => {
+      toast.success(`Connected ${res?.email ?? "Gmail"}`);
       qc.invalidateQueries({ queryKey: ["email_accounts"] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const connectGmail = () => {
-    toast.info("Gmail connection is rolling out soon", {
-      description:
-        "We're finalizing Google's security review for the Ryport Email Intelligence Engine. You'll be the first to know when it goes live.",
-    });
-  };
+  const connectGmail = () => connect.mutate();
 
   const accounts = data ?? [];
 
@@ -105,9 +135,9 @@ export function EmailIntegrations() {
             from receipts, bank alerts, and invoices.
           </p>
         </div>
-        <Button onClick={connectGmail} className="shrink-0">
-          <PlugZap className="mr-2 h-4 w-4" />
-          Connect Gmail
+        <Button onClick={connectGmail} className="shrink-0" disabled={connect.isPending}>
+          <PlugZap className={`mr-2 h-4 w-4 ${connect.isPending ? "animate-pulse" : ""}`} />
+          {connect.isPending ? "Connecting…" : "Connect Gmail"}
         </Button>
       </div>
 
