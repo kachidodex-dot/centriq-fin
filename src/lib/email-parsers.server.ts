@@ -37,10 +37,12 @@ function dateFromInternal(ms: string): string {
 
 function guessCategory(merchant: string | null, subject: string, body: string): string {
   const t = `${merchant ?? ""} ${subject} ${body}`.toLowerCase();
+  if (/(netflix|spotify|youtube premium|apple music|disney|hbo|prime video|showmax)/.test(t)) return "subscription";
+  if (/(figma|notion|github|gitlab|aws|amazon web services|google workspace|microsoft 365|office 365|slack|zoom|linear|vercel|cloudflare|openai|anthropic|chatgpt|claude|cursor|jetbrains|adobe|canva)/.test(t)) return "software";
+  if (/(facebook ads|meta ads|google ads|tiktok ads|linkedin ads|twitter ads|x ads|mailchimp|hubspot|brevo|sendgrid)/.test(t)) return "marketing";
   if (/(uber|bolt|indrive|taxi|transport|fuel|petrol)/.test(t)) return "transport";
   if (/(jumia|konga|amazon|shopify|store|mart|grocery|supermarket)/.test(t)) return "inventory";
   if (/(restaurant|food|chowdeck|jumia food|kfc|dominos|chicken|eat)/.test(t)) return "food";
-  if (/(netflix|spotify|youtube|figma|notion|github|aws|google|microsoft|subscription)/.test(t)) return "software";
   if (/(electric|ikedc|aedc|eko|nepa|water|airtime|data|mtn|airtel|glo|9mobile)/.test(t)) return "utilities";
   if (/(salary|payroll|wages)/.test(t)) return "salary";
   if (/(rent|office)/.test(t)) return "operations";
