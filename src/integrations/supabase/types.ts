@@ -23,6 +23,7 @@ export type Database = {
           last_error: string | null
           last_history_id: string | null
           last_synced_at: string | null
+          lovable_connection_id: string | null
           provider: string
           refresh_token_enc: string | null
           scopes: string | null
@@ -39,6 +40,7 @@ export type Database = {
           last_error?: string | null
           last_history_id?: string | null
           last_synced_at?: string | null
+          lovable_connection_id?: string | null
           provider?: string
           refresh_token_enc?: string | null
           scopes?: string | null
@@ -55,6 +57,7 @@ export type Database = {
           last_error?: string | null
           last_history_id?: string | null
           last_synced_at?: string | null
+          lovable_connection_id?: string | null
           provider?: string
           refresh_token_enc?: string | null
           scopes?: string | null
