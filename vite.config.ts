@@ -19,11 +19,11 @@ export default defineConfig({
   vite: {
     server: {
       host: "0.0.0.0",
-      port: 3000,
+      port: process.env.port ? parseInt(process.env.port) : 3000,
     },
     preview: {
       host: "0.0.0.0",
-      port: 3000,
+      port: process.env.port ? parseInt(process.env.port) : 3000,
     },
   },
 });
