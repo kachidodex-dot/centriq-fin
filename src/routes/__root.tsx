@@ -7,6 +7,7 @@ import logo from "@/assets/ryport-logo";
 import { AuthProvider } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/sonner";
 import { Loader as InitialLoader } from "@/components/loader";
+import { BackendStatus } from "@/components/backend-status";
 
 function NotFoundComponent() {
   return (
@@ -85,6 +86,7 @@ function RootComponent() {
         <AuthInvalidator />
         <Outlet />
         <Toaster />
+        <BackendStatus />
       </AuthProvider>
     </QueryClientProvider>
   );
