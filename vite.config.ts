@@ -7,10 +7,14 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-// @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
+// Nitro's node-server preset wraps this handler and starts a Node HTTP server that
+// listens on process.env.PORT (set by PXXL or any standard Node host).
 export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
+  },
+  nitro: {
+    preset: "node-server",
   },
   vite: {
     server: {
