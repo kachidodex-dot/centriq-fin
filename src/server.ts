@@ -11,6 +11,8 @@ let serverEntryPromise: Promise<ServerEntry> | undefined;
 
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
+    // Use the package-exported server entry. This respects the package's exports
+    // and works with Vite/Nitro's node-server preset for SSR.
     serverEntryPromise = import("@tanstack/react-start/server-entry").then(
       (m) => ((m as { default?: ServerEntry }).default ?? (m as unknown as ServerEntry)),
     );
