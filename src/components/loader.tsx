@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import logo from "@/assets/zentriq-logo.jpeg";
+import logo from "@/assets/ryport-logo";
 
 const ringVariant = {
   hidden: { opacity: 0, scale: 0.68 },
