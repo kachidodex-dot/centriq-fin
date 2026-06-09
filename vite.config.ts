@@ -1,14 +1,18 @@
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import tsConfigPaths from "vite-tsconfig-paths";
 
-// TanStack Start + Nitro configuration for production-ready SSR deployment.
-// This config includes: tanstackStart, viteReact, tailwindcss, tsConfigPaths,
-// componentTagger (dev-only), VITE_* env injection, @ path alias, React/TanStack dedupe.
-// On Railway, environment variables are properly isolated so componentTagger
-// (dev-only) and other dev-only features don't affect production builds.
+// Standard Vite config for TanStack Start + Nitro SSR deployment.
+// Uses the direct @tanstack/react-start Vite plugin instead of the Lovable wrapper.
 export default defineConfig({
-  tanstackStart: {
-    server: { entry: "server" },
-  },
+  plugins: [
+    tanstackStart({
+      server: { entry: "server" },
+    }),
+    react(),
+    tsConfigPaths(),
+  ],
   nitro: {
     preset: "node-server",
   },
