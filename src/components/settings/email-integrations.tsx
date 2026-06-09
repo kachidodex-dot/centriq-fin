@@ -64,6 +64,8 @@ export function EmailIntegrations() {
     queryFn: () => listFn(),
   });
 
+  const accounts = Array.isArray(data) ? data : [];
+
   const disconnect = useMutation({
     mutationFn: (id: string) => disconnectFn({ data: { id } }),
     onSuccess: () => {
@@ -120,8 +122,6 @@ export function EmailIntegrations() {
   });
 
   const connectGmail = () => connect.mutate();
-
-  const accounts = data ?? [];
 
   return (
     <section className="rounded-2xl border border-border bg-card p-6 shadow-soft space-y-5">

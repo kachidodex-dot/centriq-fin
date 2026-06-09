@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 type Status = "checking" | "ok" | "down";
 
 export function BackendStatus() {
+  if (!import.meta.env.DEV) {
+    return null;
+  }
+
   const [status, setStatus] = useState<Status>("checking");
 
   useEffect(() => {
