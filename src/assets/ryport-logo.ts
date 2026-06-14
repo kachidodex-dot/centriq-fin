@@ -1,2 +1,2 @@
-import asset from "./ryport-logo.png.asset.json";
-export default asset.url;
+// Use the favicon SVG as a fallback logo that works both locally and in production
+export default "/favicon.svg";
