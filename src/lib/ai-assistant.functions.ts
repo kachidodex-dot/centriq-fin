@@ -3,6 +3,10 @@ import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { generateText } from "ai";
 
 type Msg = { role: "user" | "assistant"; content: string };
+
+/**
+ * Financial context provided to the AI assistant for generating informed responses
+ */
 type FinanceContext = {
   income: number;
   expenses: number;
@@ -12,6 +16,22 @@ type FinanceContext = {
   recent: { date: string; type: string; category: string; amount: number; description?: string | null }[];
 };
 
+/**
+ * Server function to get AI-powered financial insights.
+ * Requires LOVABLE_API_KEY environment variable to be configured.
+ *
+ * @param data - Request data containing chat messages and financial context
+ * @returns Promise with AI-generated reply string
+ * @throws Error if API key is not configured or API call fails
+ *
+ * @example
+ * ```ts
+ * const response = await askAssistant.fn({
+ *   messages: [{ role: 'user', content: 'Summarize my finances' }],
+ *   context: { income: 50000, expenses: 30000, profit: 20000, ... }
+ * });
+ * ```
+ */
 export const askAssistant = createServerFn({ method: "POST" })
   .inputValidator((input: { messages: Msg[]; context: FinanceContext }) => input)
   .handler(async ({ data }) => {

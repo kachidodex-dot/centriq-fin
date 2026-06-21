@@ -1,7 +1,24 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
-// Fetch real users from Supabase
-export async function fetchRealUsers() {
+type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
+
+interface UserListItem {
+  id: string;
+  name: string;
+  email: string;
+  business: string;
+  plan: "Starter";
+  status: "active";
+  joinDate: string;
+  avatar: string;
+}
+
+/**
+ * Fetches the most recent 25 user profiles from Supabase.
+ * @returns Array of user data formatted for admin display
+ */
+export async function fetchRealUsers(): Promise<UserListItem[]> {
   try {
     const { data, error } = await supabase
       .from("profiles")
@@ -14,8 +31,7 @@ export async function fetchRealUsers() {
       return [];
     }
 
-    return (data || []).map((row) => {
-      const user = row as any;
+    return (data || []).map((user: ProfileRow) => {
       const name = user.business_name || "Unnamed business";
       return {
         id: user.id,
@@ -34,8 +50,23 @@ export async function fetchRealUsers() {
   }
 }
 
-// Fetch real transactions
-export async function fetchRealTransactions() {
+type TransactionRow = Database["public"]["Tables"]["transactions"]["Row"];
+
+interface TransactionListItem {
+  id: string;
+  user: string;
+  category: string;
+  amount: number;
+  type: "debit" | "credit";
+  date: string;
+  status: "completed";
+}
+
+/**
+ * Fetches the most recent 25 transactions from Supabase.
+ * @returns Array of transaction data formatted for admin display
+ */
+export async function fetchRealTransactions(): Promise<TransactionListItem[]> {
   try {
     const { data, error } = await supabase
       .from("transactions")
@@ -48,26 +79,40 @@ export async function fetchRealTransactions() {
       return [];
     }
 
-    return data.map((row) => {
-      const txn = row as any;
-      return {
-        id: txn.id,
-        user: `${String(txn.user_id).slice(0, 8)}…`,
-        category: txn.category || "general",
-        amount: Number(txn.amount) || 0,
-        type: txn.type === "expense" ? "debit" : "credit",
-        date: (txn.date || txn.created_at || "").toString().split("T")[0],
-        status: "completed" as const,
-      };
-    });
+    return data.map((txn: TransactionRow) => ({
+      id: txn.id,
+      user: `${String(txn.user_id).slice(0, 8)}…`,
+      category: String(txn.category) || "general",
+      amount: Number(txn.amount) || 0,
+      type: txn.type === "expense" ? ("debit" as const) : ("credit" as const),
+      date: (txn.date || txn.created_at || "").toString().split("T")[0],
+      status: "completed" as const,
+    }));
   } catch (error) {
     console.error("Failed to fetch transactions:", error);
     return [];
   }
 }
 
-// Get dashboard statistics from Supabase
-export async function fetchDashboardStats() {
+interface DashboardStats {
+  totalUsers: number;
+  totalBusinesses: number;
+  monthlyRevenue: number;
+  activeToday: number;
+  totalTransactions: number;
+  charts: {
+    userGrowth: Array<{ month: string; value: number }>;
+    transactionVolume: Array<{ month: string; value: number }>;
+    revenueByCategory: Array<{ name: string; value: number }>;
+  };
+}
+
+/**
+ * Fetches aggregated dashboard statistics from Supabase.
+ * Includes user counts, transaction metrics, and category breakdown.
+ * @returns Dashboard statistics or defaults on error
+ */
+export async function fetchDashboardStats(): Promise<DashboardStats> {
   try {
     const [usersRes, transactionsRes] = await Promise.all([
       supabase.from("profiles").select("id", { count: "exact", head: true }),
@@ -76,7 +121,7 @@ export async function fetchDashboardStats() {
 
     const totalUsers = usersRes.count || 0;
     const totalTransactions = transactionsRes.count || 0;
-    const txs: any[] = transactionsRes.data || [];
+    const txs: TransactionRow[] = transactionsRes.data || [];
     const totalRevenue = txs
       .filter(t => t.type === "income")
       .reduce((sum, t) => sum + Number(t.amount || 0), 0);
@@ -100,11 +145,11 @@ export async function fetchDashboardStats() {
     const userGrowth = months.map(m => ({ month: m.month, value: 0 }));
     const transactionVolume = months.map(m => ({
       month: m.month,
-      value: txs.filter(t => (t.date || "").startsWith(m.key)).length,
+      value: txs.filter((t: TransactionRow) => (t.date || "").startsWith(m.key)).length,
     }));
     const catMap: Record<string, number> = {};
-    txs.forEach(t => {
-      const c = t.category || "Other";
+    txs.forEach((t: TransactionRow) => {
+      const c = String(t.category) || "Other";
       catMap[c] = (catMap[c] || 0) + Number(t.amount || 0);
     });
     const revenueByCategory = Object.entries(catMap)
